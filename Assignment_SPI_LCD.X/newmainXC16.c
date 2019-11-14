@@ -59,7 +59,7 @@ int main(void) {
     /* while (SPI1STATbits.SPITBF == 1); // wait until not full
      //SPI1BUF = 'Hello '; */
 
-    tmr1_setup_period(1000);
+    tmr1_setup_period(1000);  // Wait 1 second at startup
 
     IEC0bits.INT0IE = 1; // Enable interrupt of button s5
     IEC0bits.T2IE = 1; // Enable interrupt of timer t2
@@ -147,7 +147,7 @@ void tmr2_setup_period(int ms) {
     T2CONbits.TON = 1; // starts the timer!
 }
 
-
+// Timer 1 setup function
 void tmr1_setup_period(int ms) {
     TMR1 = 0; // reset timer counter
     Fcy = (Fosc / 4.0);
@@ -157,6 +157,7 @@ void tmr1_setup_period(int ms) {
     T1CONbits.TON = 1; // starts the timer!
 }
 
+// Temporization function using timer 1
 void tmr1_wait_period() {
     while (IFS0bits.T1IF == 0) //wait for the timer to finish
     {
