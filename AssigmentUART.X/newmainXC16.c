@@ -5,6 +5,8 @@
  *
  * Created on 14 November 2019, 11:05
  */
+
+// FOSC
 #pragma config FPR = XT                 // Primary Oscillator Mode (XT)
 #pragma config FOS = PRI                // Oscillator Source (Primary Oscillator)
 #pragma config FCKSMEN = CSW_FSCM_OFF   // Clock Switching and Monitor (Sw Disabled, Mon Disabled)
@@ -36,6 +38,8 @@
 #include <xc.h>
 #include <stdio.h>
 #include <string.h>
+#define FOSC 7372800 // Frequency oscillator in Hz
+#define FCY 1843200 // Frequency clock (Foscillator/4) in Hz
 
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
@@ -43,51 +47,47 @@ void tmr1_wait_period();
 void printToLCD(char string[]);
 void clearLCD();
 
-long int Fosc = 7372800; // 7.3728 MHz
-long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
-
-//int n;
-
-int main(void) {
-
+void setLCD() {
     SPI1CONbits.MSTEN = 1; // master mode
-    SPI1CONbits.MODE16 = 0; // 8?bit mode
+    SPI1CONbits.MODE16 = 0; // 8-bit mode
     SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
-    SPI1CONbits.SPRE = 3; // 5:1 secondary prescaler
+    SPI1CONbits.SPRE = 6; // 1:2 secondary prescaler
     SPI1STATbits.SPIEN = 1; // enable SPI
-
-    U2BRG = 11; // (7372800 / 4) / (16  9600) ? 1
-    // U2BRG = 9600; 
-    U2MODEbits.UARTEN = 1; // enable UART
-    U2STAbits.UTXEN = 1; // enable U2TX (must be after UARTEN)
-    //  U2STAbits.URXEN = 1; // enable U2RX (must be after UARTEN)
-    //U2BRG = 115200;
 
     tmr1_setup_period(1000); // Wait 1 second at startup
     tmr1_wait_period();
+   }
+   
+void setUART() {
+    U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1
+    U2MODEbits.UARTEN = 1; // enable UART
+    U2STAbits.UTXEN = 1; // enable U2TX (must be after UARTEN)
+    //U2STAbits.URXEN = 1; // enable U2RX (must be after UARTEN)
+    //U2BRG = 115200;
+   }
 
-    printToLCD("Waiting for data");
+void printToLCD(int text) {
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = text;
+}
+
+int main(void) {
+
+    setLCD();
+    setUART();
 
     // Wait until there are some characters to be read on UART2 
-    while (U2STAbits.URXDA == 0) {
-
+    while (1) {
+        if(U2STAbits.URXDA == 1){
+            value = U2RXREG;
+            printToLCD(value);
+        }
     }
-
-    //clearLCD();
-
-    char c = U2RXREG;
-    //printToLCD(c);
-    // U2RXREG // CONTAINS RECEIVED CHAR
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = c;
-
-
-    printToLCD("Data received");
-
     return 0;
 }
 
 void clearLCD() {
+
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0x80;
 
@@ -100,24 +100,11 @@ void clearLCD() {
     SPI1BUF = 0x80;
 }
 
-void printToLCD(char string[]) {
-    int i;
-    int n = strlen(string);
-
-    clearLCD();
-
-    for (i = 0; i < n; i++) {
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = string[i];
-    }
-}
-
 // Timer 1 setup function
 
 void tmr1_setup_period(int ms) {
     TMR1 = 0; // reset timer counter
-    Fcy = (Fosc / 4.0);
-    PR1 = (Fcy) / 64.0 * (ms / 1000.0); //must be function of PR1
+    PR1 = (FCY) / 64.0 * (ms / 1000.0); //must be function of PR1
 
     T1CONbits.TCKPS = 0b10; // prescaler 1:64    -> up to a bit more than 2 seconds
     T1CONbits.TON = 1; // starts the timer!
@@ -126,8 +113,7 @@ void tmr1_setup_period(int ms) {
 // Temporization function using timer 1
 
 void tmr1_wait_period() {
-    while (IFS0bits.T1IF == 0) //wait for the timer to finish
-    {
+    while (IFS0bits.T1IF == 0) { //wait for the timer to finish
     }
 
     IFS0bits.T1IF = 0; //set the timer flag to zero to be notified of a new event    
