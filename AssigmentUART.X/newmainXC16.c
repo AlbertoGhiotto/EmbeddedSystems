@@ -44,7 +44,7 @@
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
 
-void printToLCD(char string[]);
+void printToLCD(int text);
 void clearLCD();
 
 void setLCD() {
@@ -75,7 +75,10 @@ int main(void) {
 
     setLCD();
     setUART();
+    int value=3;
 
+    printToLCD(value);
+    
     // Wait until there are some characters to be read on UART2 
     while (1) {
         if(U2STAbits.URXDA == 1){
@@ -83,8 +86,14 @@ int main(void) {
             printToLCD(value);
         }
     }
+    
+    value = 9;
+    printToLCD(value);
+    
     return 0;
 }
+
+// U2TXREG should be the register to write on uart
 
 void clearLCD() {
 
