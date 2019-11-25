@@ -5,6 +5,8 @@
  *
  * Created on 14 November 2019, 11:05
  */
+
+//FOSC
 #pragma config FPR = XT                 // Primary Oscillator Mode (XT)
 #pragma config FOS = PRI                // Oscillator Source (Primary Oscillator)
 #pragma config FCKSMEN = CSW_FSCM_OFF   // Clock Switching and Monitor (Sw Disabled, Mon Disabled)
@@ -42,6 +44,8 @@ void tmr1_wait_period();
 
 void printToLCD(char string[]);
 void clearLCD();
+void setLCD();
+void setUART();
 
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
@@ -50,41 +54,49 @@ long int Fcy; // number of clocks in one second = 1,843,200 clocks for each seco
 
 int main(void) {
 
-    SPI1CONbits.MSTEN = 1; // master mode
-    SPI1CONbits.MODE16 = 0; // 8?bit mode
-    SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
-    SPI1CONbits.SPRE = 3; // 5:1 secondary prescaler
-    SPI1STATbits.SPIEN = 1; // enable SPI
+    setLCD();
+    setUART();
 
-    U2BRG = 11; // (7372800 / 4) / (16  9600) ? 1
+
+    printToLCD("Waiting for data");
+
+    // Wait until there are some characters to be read on UART2 
+    while (1) {
+        if (U2STAbits.URXDA == 1) {
+            char c = U2RXREG;
+            U2TXREG = c;
+            clearLCD();
+            while (SPI1STATbits.SPITBF == 1); // wait until not full
+            SPI1BUF = c;
+
+            printToLCD("Data received");
+        }
+        if (U2STAbits.URXDA == 1) {  // reset URXDA flag
+            char c = U2RXREG;
+        }
+
+    }
+
+    return 0;
+}
+
+void setUART() {
+    U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1
     // U2BRG = 9600; 
     U2MODEbits.UARTEN = 1; // enable UART
     U2STAbits.UTXEN = 1; // enable U2TX (must be after UARTEN)
     //  U2STAbits.URXEN = 1; // enable U2RX (must be after UARTEN)
     //U2BRG = 115200;
-
     tmr1_setup_period(1000); // Wait 1 second at startup
     tmr1_wait_period();
+}
 
-    printToLCD("Waiting for data");
-
-    // Wait until there are some characters to be read on UART2 
-    while (U2STAbits.URXDA == 0) {
-
-    }
-
-    //clearLCD();
-
-    char c = U2RXREG;
-    //printToLCD(c);
-    // U2RXREG // CONTAINS RECEIVED CHAR
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = c;
-
-
-    printToLCD("Data received");
-
-    return 0;
+void setLCD() {
+    SPI1CONbits.MSTEN = 1; // master mode
+    SPI1CONbits.MODE16 = 0; // 8-bit mode
+    SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
+    SPI1CONbits.SPRE = 7; // 7:1 secondary prescaler
+    SPI1STATbits.SPIEN = 1; // enable SPI
 }
 
 void clearLCD() {
