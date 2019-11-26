@@ -59,15 +59,15 @@ int main(void) {
 
     ADCON2bits.CHPS = 1; //selects two channels
 
-    ADCON3bits.SAMC = 8; // sample time 15 Tad: how long the sampling should last [0 Tad - 31 Tad]
+    ADCON3bits.SAMC = 15; // sample time 15 Tad: how long the sampling should last [0 Tad - 31 Tad]
     //(matters only if SSRC = 7)
 
-    ADCON3bits.ADCS = 1; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
+    ADCON3bits.ADCS = 30; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
     ADCON2bits.SMPI = 1;
-    // ADCHS: selects the inputs to the channels
-
+    
     ADPCFG = 0xFFFF; // Selects which pin should be used for A/D
 
+    // ADCHS: selects the inputs to the channels
     //connect AN2 as CH0 input
     ADCHSbits.CH0NA = 0;
     ADCHSbits.CH0SA = 2;
@@ -84,13 +84,11 @@ int main(void) {
 
     setLCD();
 
-
     // Variables for reading ADC value
-    int ADCPotValue;
-    int ADCTempValue;
-    // Variables for doing normalization and conversion
+    float ADCPotValue;
+    float ADCTempValue;
+    // Variable for doing normalization and conversion
     float degTemp;
-    float normTemp;
     // Variables for printing on LCD
     char potent[16];
     char temp[16];
@@ -101,33 +99,28 @@ int main(void) {
         ADCON1bits.SAMP = 1; //enable bit sampling 
         while (IFS0bits.ADIF == 0);
 
-
         IFS0bits.ADIF = 0; // resetting DONE flag
         clearLCD();
 
         // Potentiometer
-        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // get ADC value
-        sprintf(potent, "%d", ADCPotValue);
+        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        sprintf(potent, "%.2f", ADCPotValue);
         printToLCD("V = ");
         printToLCD(potent);
         printToLCD(" V");
 
         // Temperature
-        ADCTempValue = ADCBUF1; // get ADC value
         //Move cursor to second row
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = 0xC0;
 
-        normTemp = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN));
-        // normTemp = VMAX + ADCTempValue / 1023.0 * (VMIN - VMAX);
-        degTemp = 25 + ((normTemp * 1000) - 750) / 10;
-
+        
+        ADCTempValue = (VMIN + ADCBUF1 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10;      // Convert the value in celsius degree
         sprintf(temp, "%2.2f", degTemp);
         printToLCD("T = ");
         printToLCD(temp);
-        printToLCD(" °");
-
-
+        printToLCD(" C");
 
         tmr1_wait_period();
     }

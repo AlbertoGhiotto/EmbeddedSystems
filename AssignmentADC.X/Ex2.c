@@ -62,30 +62,29 @@ int main(void) {
     ADCON3bits.SAMC = 15; // sample time 15 Tad: how long the sampling should last [0 Tad - 31 Tad]
     //(matters only if SSRC = 7)
 
-    ADCON3bits.ADCS = 20; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
+    ADCON3bits.ADCS = 50; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
 
     // ADCHS: selects the inputs to the channels
     ADCHSbits.CH0NA = 0;
     ADCHSbits.CH0SA = 3;
 
     ADPCFG = 0xFFFF; // Selects which pin should be used for A/D
-
-    //ADPCFGbits.PCFG2 = 0; //connect AN2 as CH0 input? (same as ADCHS = 0x0002;)
-
-    ADPCFGbits.PCFG3 = 0; //connect AN3 as CH0 input? (same as ADCHS = 0x0003;)
     
+    ADPCFGbits.PCFG3 = 0; //connect AN3 as CH0 input
+
     ADCON1bits.ADON = 1; // turns on the ADC module
 
     tmr1_setup_period(1000); // Wait 1 second at startup
 
     setLCD();
 
-    
+    // Variables for printing on LCD
     char temp[16];
-    int ADCTempValue;
-    float value;
+    // Variables for reading ADC value
+    float ADCTempValue;
+    // Variable for doing normalization and conversion
     float degTemp;
-    float normTemp;
+
 
     tmr1_wait_period();
 
@@ -93,16 +92,11 @@ int main(void) {
         ADCON1bits.SAMP = 1; //enable bit sampling 
         while (IFS0bits.ADIF == 0);
         IFS0bits.ADIF = 0;
-        ADCTempValue = ADCBUF0; // get ADC value
 
         clearLCD();
-        
-        //value = (((ADCValue / 1024.0) * 5000) - 525)*0.1;
-        
-        normTemp = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN));
-        // normTemp = VMAX + ADCTempValue / 1023.0 * (VMIN - VMAX);
-        degTemp = 25 + ((normTemp * 1000) - 750) / 10;
 
+        ADCTempValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10; // Convert the value in celsius degree
         sprintf(temp, "%2.2f", degTemp);
         printToLCD("T = ");
         printToLCD(temp);
@@ -138,8 +132,6 @@ void clearLCD() {
 void printToLCD(char string[]) {
     int i;
     int n = strlen(string);
-
-    //clearLCD();
 
     for (i = 0; i < n; i++) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full

@@ -202,7 +202,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="Ex2.c" ex="true" overriding="false">
+      <item path="Ex2.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -215,6 +215,8 @@
         </C30-LD>
         <C30Global>
         </C30Global>
+      </item>
+      <item path="Ex3.c" ex="true" overriding="false">
       </item>
       <item path="Ex3_1.c" ex="true" overriding="false">
       </item>

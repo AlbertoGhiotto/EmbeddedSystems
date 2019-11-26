@@ -40,6 +40,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define VMIN 0.0
+#define VMAX 5.0
+
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
 
@@ -67,24 +70,29 @@ int main(void) {
 
     ADPCFG = 0xFFFF; // Selects which pin should be used for A/D
 
-    ADPCFGbits.PCFG2 = 0; //connect AN2 as CH0 input? (same as ADCHS = 0x0002;)
+    ADPCFGbits.PCFG2 = 0; //connect AN2 as CH0 input
 
     ADCON1bits.ADON = 1; // turns on the ADC module
 
     tmr1_setup_period(1000); // Wait 1 second at startup
 
     setLCD();
-
-    char print[16];
+    
+    // Variables for reading ADC value
+    float ADCPotValue;
+    // Variables for printing on LCD
+    char potent[16];
 
     tmr1_wait_period();
 
     while (1) {
-        int ADCValue = ADCBUF0; // get ADC value
-
-        sprintf(print, "%d", ADCValue);
-        //clearLCD();
-        printToLCD(print);
+        clearLCD();
+        // Potentiometer
+        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        sprintf(potent, "%.2f", ADCPotValue);
+        printToLCD("V = ");
+        printToLCD(potent);
+        printToLCD(" V");
 
         tmr1_wait_period();
     }
@@ -116,8 +124,6 @@ void clearLCD() {
 void printToLCD(char string[]) {
     int i;
     int n = strlen(string);
-
-    clearLCD();
 
     for (i = 0; i < n; i++) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
