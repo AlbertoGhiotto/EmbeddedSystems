@@ -40,6 +40,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define VMIN 0.0
+#define VMAX 5.0
+
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
 
@@ -51,24 +54,29 @@ long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
 
 int main(void) {
-    ADCON1bits.ASAM = 1; // Set automatic start
+    ADCON1bits.ASAM = 0; // Set manual start
     ADCON1bits.SSRC = 7; //selects how the conversion should start (0 = manual, 7 = internal counter)
 
-    ADCON2bits.CHPS = 0; //selects the channels
+    ADCON2bits.CHPS = 1; //selects two channels
 
-    ADCON3bits.SAMC = 15; // sample time 15 Tad: how long the sampling should last [0 Tad - 31 Tad]
+    ADCON3bits.SAMC = 8; // sample time 15 Tad: how long the sampling should last [0 Tad - 31 Tad]
     //(matters only if SSRC = 7)
 
-    ADCON3bits.ADCS = 63; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
-
+    ADCON3bits.ADCS = 1; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
+    ADCON2bits.SMPI = 1;
     // ADCHS: selects the inputs to the channels
-    //ADCHSbits.CH0NA = 0;
-
-
 
     ADPCFG = 0xFFFF; // Selects which pin should be used for A/D
 
-    //ADPCFGbits.PCFG2 = 0; //connect AN2 as CH0 input? (same as ADCHS = 0x0002;)
+    //connect AN2 as CH0 input
+    ADCHSbits.CH0NA = 0;
+    ADCHSbits.CH0SA = 2;
+    ADPCFGbits.PCFG2 = 0;
+
+    //connect AN3 as CH1 input
+    ADCHSbits.CH123NA = 0;
+    ADCHSbits.CH123SA = 1;
+    ADPCFGbits.PCFG3 = 0;
 
     ADCON1bits.ADON = 1; // turns on the ADC module
 
@@ -76,43 +84,50 @@ int main(void) {
 
     setLCD();
 
-    char temp[16];
+
+    // Variables for reading ADC value
+    int ADCPotValue;
+    int ADCTempValue;
+    // Variables for doing normalization and conversion
+    float degTemp;
+    float normTemp;
+    // Variables for printing on LCD
     char potent[16];
-    int ADCValue;
-    float value;
+    char temp[16];
 
     tmr1_wait_period();
 
     while (1) {
-        
+        ADCON1bits.SAMP = 1; //enable bit sampling 
+        while (IFS0bits.ADIF == 0);
+
+
+        IFS0bits.ADIF = 0; // resetting DONE flag
         clearLCD();
-        
-        //connect AN2 as CH0 input
-        ADCHSbits.CH0SA = 2;
-        ADPCFGbits.PCFG2 = 0;
-        
-        ADCValue = ADCBUF0; // get ADC value
 
-        sprintf(potent, "%d", ADCValue);
+        // Potentiometer
+        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // get ADC value
+        sprintf(potent, "%d", ADCPotValue);
+        printToLCD("V = ");
         printToLCD(potent);
+        printToLCD(" V");
 
-        tmr1_wait_period();   
-
-        
-       /* //connect AN3 as CH0 input
-        ADCHSbits.CH0SA = 3;
-        ADPCFGbits.PCFG3 = 0; //connect AN3 as CH0 input? (same as ADCHS = 0x0003;)
-
-        ADCValue = ADCBUF0; // get ADC value
+        // Temperature
+        ADCTempValue = ADCBUF1; // get ADC value
         //Move cursor to second row
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = 0xC0;
-        
-        value = (((ADCValue / 1024.0) * 5000) - 525)*0.1;
-        
-        sprintf(temp, "%2.2f", value);
-        
-        printToLCD(temp);*/
+
+        normTemp = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN));
+        // normTemp = VMAX + ADCTempValue / 1023.0 * (VMIN - VMAX);
+        degTemp = 25 + ((normTemp * 1000) - 750) / 10;
+
+        sprintf(temp, "%2.2f", degTemp);
+        printToLCD("T = ");
+        printToLCD(temp);
+        printToLCD(" °");
+
+
 
         tmr1_wait_period();
     }

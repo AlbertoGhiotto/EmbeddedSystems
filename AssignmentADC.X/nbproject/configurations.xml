@@ -15,6 +15,7 @@
       <itemPath>Ex2.c</itemPath>
       <itemPath>Ex1.c</itemPath>
       <itemPath>Ex3.c</itemPath>
+      <itemPath>Ex3_1.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -188,8 +189,34 @@
         <property key="save-temps" value="false"/>
       </C30Global>
       <item path="Ex1.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <item path="Ex2.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
+      </item>
+      <item path="Ex3_1.c" ex="true" overriding="false">
       </item>
       <pk4hybrid>
         <property key="ADC" value="true"/>
