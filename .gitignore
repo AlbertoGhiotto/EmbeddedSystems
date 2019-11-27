@@ -12,7 +12,6 @@ nbproject/private/
 nbproject/Package-*.bash
 build/
 nbbuild/
-dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
@@ -20,3 +19,8 @@ funclist
 nbproject/Makefile-*
 disassembly/
 *.map
+dist/
+debug/
+nbproject/
+/build/default/
+/dist/default/
