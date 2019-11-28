@@ -1,9 +1,9 @@
 /*
- * File:   Ex1.c
- * Author:   Filippo Gandolfi    S4112879
- *           Alberto Ghiotto     S4225586
+ * File:   newmainXC16.c
+  * Author:   Filippo Gandolfi    S4112879
+ *            Alberto Ghiotto     S4225586
  *
- * Created on 25 November 2019, 11:50
+ * Created on 28 November 2019, 10:27
  */
 
 //FOSC
@@ -35,6 +35,10 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
+/*Read the value of the potentiometer (AN2). Use the
+potentiometer to create a PWM signal with a 20ms period and
+with high pulse width between 1ms and 2ms. Configure the
+PWM peripheral to create the PWM signal on the PWM2H pin*/
 
 #include "xc.h"
 #include <stdio.h>
@@ -46,14 +50,41 @@
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
 
-void printToLCD(char string[]);
-void clearLCD();
-void setLCD();
-
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
 
 int main(void) {
+    
+    
+    // Variables for reading ADC value
+    float ADCPotValue;
+    // Variables for printing on LCD
+    char potent[16];
+
+    tmr1_wait_period();
+    
+    PTCON.PTEN = 1;
+    PWMCON2.PWM2H = 1;
+    //T = 20ms -> f_PWM = 1/ 0.02
+    float T = 0.02;
+    float f_pwm = 1 / T;
+    // PTPER must fit in 15 bits -> <32767
+
+    while (1) {
+      
+        // Potentiometer
+        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        sprintf(potent, "%.2f", ADCPotValue);
+       
+        tmr1_wait_period();
+    }
+    
+    
+    return 0;
+}
+
+void setupADC()
+{
     ADCON1bits.ASAM = 1; // Set automatic start
     ADCON1bits.SSRC = 7; //selects how the conversion should start (0 = manual, 7 = internal counter)
 
@@ -75,61 +106,9 @@ int main(void) {
     ADCON1bits.ADON = 1; // turns on the ADC module
 
     tmr1_setup_period(1000); // Wait 1 second at startup
-
-    setLCD();
-    
-    // Variables for reading ADC value
-    float ADCPotValue;
-    // Variables for printing on LCD
-    char potent[16];
-
-    tmr1_wait_period();
-
-    while (1) {
-        clearLCD();
-        // Potentiometer
-        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
-        sprintf(potent, "%.2f", ADCPotValue);
-        printToLCD("V = ");
-        printToLCD(potent);
-        printToLCD(" V");
-
-        tmr1_wait_period();
-    }
-
-    return 0;
 }
 
-void setLCD() {
-    SPI1CONbits.MSTEN = 1; // master mode
-    SPI1CONbits.MODE16 = 0; // 8-bit mode
-    SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
-    SPI1CONbits.SPRE = 6; // 6:1 secondary prescaler
-    SPI1STATbits.SPIEN = 1; // enable SPI
-}
 
-void clearLCD() {
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0x80;
-
-    int i;
-    for (i = 0; i < 20; i++) {
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = ' ';
-    }
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0x80;
-}
-
-void printToLCD(char string[]) {
-    int i;
-    int n = strlen(string);
-
-    for (i = 0; i < n; i++) {
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = string[i];
-    }
-}
 
 // Timer 1 setup function
 void tmr1_setup_period(int ms) {
