@@ -80,7 +80,7 @@ int main(void) {
 
     ADCON1bits.ADON = 1; // turns on the ADC module
 
-    tmr1_setup_period(1000); // Wait 1 second at startup
+    tmr1_setup_period(1000); // Init timer to wait 1 second at startup
 
     setLCD();
 
