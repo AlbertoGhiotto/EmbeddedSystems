@@ -1,6 +1,6 @@
 /*
  * File:   newmainXC16.c
-  * Author:   Filippo Gandolfi    S4112879
+ * Author:   Filippo Gandolfi    S4112879
  *            Alberto Ghiotto     S4225586
  *
  * Created on 28 November 2019, 10:27
@@ -44,47 +44,96 @@ PWM peripheral to create the PWM signal on the PWM2H pin*/
 #include <stdio.h>
 #include <string.h>
 
-#define VMIN 0.0
-#define VMAX 5.0
+#define TMIN 0.001
+#define TMAX 0.002
 
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
+
+void setupADC();
+
+void printToLCD(char string[]);
+void clearLCD();
+void setLCD();
 
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
 
 int main(void) {
-    
-    
+    setupADC();
+    setLCD();
+    tmr1_setup_period(100);
+
     // Variables for reading ADC value
     float ADCPotValue;
+    float temp;
     // Variables for printing on LCD
     char potent[16];
+    char value[16];
 
-    tmr1_wait_period();
-    
-    PTCON.PTEN = 1;
-    PWMCON2.PWM2H = 1;
+    /*In the Free Running mode, the PWM time base counts
+    upwards until the value in the Time Base Period register
+    (PTPER) is matched.*/
+    PTCONbits.PTMOD = 0;
+
+    //PWMCON2bits.PWM2H = 1; 
+    // Setup the PWM2H pin
+    PWMCON1bits.PEN2H = 1;
     //T = 20ms -> f_PWM = 1/ 0.02
     float T = 0.02;
-    float f_pwm = 1 / T;
+    float f_pwm = 1 / T; // 50 Hz
     // PTPER must fit in 15 bits -> <32767
+    // PTER = Fcy/(f_pwm * PTMR_Prescaler) -1
+    // With prescaler 1 PTER = 36683 -> Set prescaler at 4
+    PTCONbits.PTCKPS = 1; // prescaler at 1:4
+    // Could develop a function which return the prescaler value for the multiplication given the value of PTCKPS
+    int PTMR_Prescaler = 4;
+
+    PTPER = Fcy / (f_pwm * PTMR_Prescaler) - 1; //9215
+
+    // Wait 1 second at startup
+    tmr1_wait_period();
+
+    PTCONbits.PTEN = 1; // Turns on the PWM time base module
+
+
 
     while (1) {
-      
+        ADCON1bits.SAMP = 1; //enable bit sampling 
+        while (IFS0bits.ADIF == 0);
+
+        IFS0bits.ADIF = 0; // resetting DONE flag
+        clearLCD();
+
         // Potentiometer
-        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
-        sprintf(potent, "%.2f", ADCPotValue);
-       
+        ADCPotValue = ADCBUF0 / 1023.0; // Get ADC value 
+        sprintf(potent, "%f", ADCPotValue);
+        // Print potentiometer on LCD's first row
+        printToLCD("Potent = ");
+        printToLCD(potent);
+
+        //Define the duty cycle
+        temp = (TMIN + (ADCPotValue) * (TMAX - TMIN));
+        float dutyCycle = (temp / T) * 2 * PTPER;
+        PDC2 = dutyCycle;
+        sprintf(value, "%d", PDC2);
+
+        // Print PDC2 value on LCD's second row
+        //Move cursor to second row
+        while (SPI1STATbits.SPITBF == 1); // wait until not full
+        SPI1BUF = 0xC0;
+        printToLCD("Control = ");
+        printToLCD(value);
+
+
         tmr1_wait_period();
     }
-    
-    
+
+
     return 0;
 }
 
-void setupADC()
-{
+void setupADC() {
     ADCON1bits.ASAM = 1; // Set automatic start
     ADCON1bits.SSRC = 7; //selects how the conversion should start (0 = manual, 7 = internal counter)
 
@@ -104,13 +153,51 @@ void setupADC()
     ADPCFGbits.PCFG2 = 0; //connect AN2 as CH0 input
 
     ADCON1bits.ADON = 1; // turns on the ADC module
-
-    tmr1_setup_period(1000); // Wait 1 second at startup
 }
 
+void setLCD() {
+    SPI1CONbits.MSTEN = 1; // master mode
+    SPI1CONbits.MODE16 = 0; // 8-bit mode
+    SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
+    SPI1CONbits.SPRE = 6; // 6:1 secondary prescaler
+    SPI1STATbits.SPIEN = 1; // enable SPI
+}
 
+// Clear function clears both rows
+void clearLCD() {
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = 0x80;
+
+    int i;
+    for (i = 0; i < 25; i++) {
+        while (SPI1STATbits.SPITBF == 1); // wait until not full
+        SPI1BUF = ' ';
+    }
+    //Move cursor to second row
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = 0xC0;
+    for (i = 0; i < 25; i++) {
+        while (SPI1STATbits.SPITBF == 1); // wait until not full
+        SPI1BUF = ' ';
+    }
+    
+    // Reposition cursor on first row
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = 0x80;
+}
+
+void printToLCD(char string[]) {
+    int i;
+    int n = strlen(string);
+
+    for (i = 0; i < n; i++) {
+        while (SPI1STATbits.SPITBF == 1); // wait until not full
+        SPI1BUF = string[i];
+    }
+}
 
 // Timer 1 setup function
+
 void tmr1_setup_period(int ms) {
     TMR1 = 0; // reset timer counter
     Fcy = (Fosc / 4.0);
@@ -121,6 +208,7 @@ void tmr1_setup_period(int ms) {
 }
 
 // Temporization function using timer 1
+
 void tmr1_wait_period() {
     while (IFS0bits.T1IF == 0) //wait for the timer to finish
     {
