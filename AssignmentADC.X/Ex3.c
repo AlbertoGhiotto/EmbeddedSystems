@@ -64,7 +64,7 @@ int main(void) {
 
     ADCON3bits.ADCS = 30; //selects how long is one Tad [1/2 Tcy - 32 Tcy]
     ADCON2bits.SMPI = 1;
-    
+
     ADPCFG = 0xFFFF; // Selects which pin should be used for A/D
 
     // ADCHS: selects the inputs to the channels
@@ -98,12 +98,15 @@ int main(void) {
     while (1) {
         ADCON1bits.SAMP = 1; //enable bit sampling 
         while (IFS0bits.ADIF == 0);
+        // Read buffer value immediately after checking the done bit
+        ADCPotValue = ADCBUF0;
+        ADCTempValue = ADCBUF1;
 
         IFS0bits.ADIF = 0; // resetting DONE flag
         clearLCD();
 
         // Potentiometer
-        ADCPotValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        ADCPotValue = (VMIN + ADCPotValue / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
         sprintf(potent, "%.2f", ADCPotValue);
         printToLCD("V = ");
         printToLCD(potent);
@@ -114,9 +117,9 @@ int main(void) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = 0xC0;
 
-        
-        ADCTempValue = (VMIN + ADCBUF1 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
-        degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10;      // Convert the value in celsius degree
+
+        ADCTempValue = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10; // Convert the value in celsius degree
         sprintf(temp, "%2.2f", degTemp);
         printToLCD("T = ");
         printToLCD(temp);
@@ -141,7 +144,7 @@ void clearLCD() {
     SPI1BUF = 0x80;
 
     int i;
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 16; i++) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }

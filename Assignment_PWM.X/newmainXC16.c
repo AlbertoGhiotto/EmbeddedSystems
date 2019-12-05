@@ -101,12 +101,13 @@ int main(void) {
     while (1) {
         ADCON1bits.SAMP = 1; //enable bit sampling 
         while (IFS0bits.ADIF == 0);
-
+        // Read buffer value immediately after checking the done bit
+        ADCPotValue = ADCBUF0;
         IFS0bits.ADIF = 0; // resetting DONE flag
         clearLCD();
 
         // Potentiometer
-        ADCPotValue = ADCBUF0 / 1023.0; // Get ADC value 
+        ADCPotValue = ADCPotValue / 1023.0; // Get ADC value 
         sprintf(potent, "%f", ADCPotValue);
         // Print potentiometer on LCD's first row
         printToLCD("Potent = ");
@@ -169,14 +170,14 @@ void clearLCD() {
     SPI1BUF = 0x80;
 
     int i;
-    for (i = 0; i < 25; i++) {
+    for (i = 0; i < 25; i++) { //should be 16 since there are only 16 columns
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }
     //Move cursor to second row
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0xC0;
-    for (i = 0; i < 25; i++) {
+    for (i = 0; i < 25; i++) { //should be 16 since there are only 16 columns
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }

@@ -92,10 +92,10 @@ int main(void) {
         ADCON1bits.SAMP = 1; //enable bit sampling 
         while (IFS0bits.ADIF == 0);
         IFS0bits.ADIF = 0;
-
+        ADCTempValue = ADCBUF0;  // Read buffer value immediately after checking the done bit 
         clearLCD();
 
-        ADCTempValue = (VMIN + ADCBUF0 / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
+        ADCTempValue = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
         degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10; // Convert the value in celsius degree
         sprintf(temp, "%2.2f", degTemp);
         printToLCD("T = ");
@@ -121,7 +121,7 @@ void clearLCD() {
     SPI1BUF = 0x80;
 
     int i;
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 16; i++) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }

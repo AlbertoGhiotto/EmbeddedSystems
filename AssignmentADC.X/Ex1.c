@@ -113,7 +113,7 @@ void clearLCD() {
     SPI1BUF = 0x80;
 
     int i;
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 16; i++) {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }
