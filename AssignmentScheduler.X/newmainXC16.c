@@ -81,12 +81,8 @@ struct sentences sentence1 = {"This is a very long string               ", 0, 0}
 
 // Define the flag to print on LCD. Set to 1 to print
 int lcdFlag = 1;
-// Define print mod flag
-int printMod = 1;
-// Define LCD cursor variable
-int lcdCursor = 0;
 
-//
+// Variables for sliding motion
 int spacesToPrint = 0;
 int spaces = 0;
 
@@ -99,36 +95,24 @@ int main() {
     tmr1_setup_period(1000); // Wait 1 second at startup
     tmr1_wait_period();
 
-
     tmr1_setup_period(5); // Init timer to work as the heartbeat. 5 ms 
     // Set the Ns -> Heartbeat is = 5 so: 
     // N1 = 1 N2 = 250/5 = 50; N3 = 500/5 = 100
     schedInfo[0].N = 1;
     schedInfo[1].N = 50;
     schedInfo[2].N = 100;
-    //schedInfo[2].N = 1 ; //print task for debugging
     // Set n = 0. The scheduler will update it on the go
     schedInfo[0].n = 0;
     schedInfo[1].n = 0;
     schedInfo[2].n = 0;
-
-    // while (SPI1STATbits.SPITBF == 1); // wait until not full
-    //SPI1BUF = sentence.sentence[sentence.index + sentence.printedChar];    
-    clearLCD();
-    //printChar('F');
-    //printChar(':');
-
-    //printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]);    
-    //printToLCD(sentence1.sentence[sentence1.index + sentence1.printedChar]);
-    //printToLCD("Ciao");
-
+    
+    
+    //clearLCD();
 
     while (1) {
         scheduler();
         tmr1_wait_period();
     }
-
-    //while (1);
 
     return 0;
 }
@@ -155,7 +139,6 @@ void scheduler() {
 }
 
 void task1() {
-    
     if( spaces > 0 && lcdFlag)
     {
         printChar(' ');
@@ -169,7 +152,7 @@ void task1() {
         // Sentence.index = sentence.index +  1 ;  // Increment index of string
         sentence1.printedChar = sentence1.printedChar + 1; // Increment # of printed char
     }
-    if ((sentence1.printedChar + spacesToPrint) == 16) {
+    if ((sentence1.printedChar + spacesToPrint) == 16) { 
         // Set the LCD priting flag to 0    
         lcdFlag = 0;
         // Reset number of printed char
@@ -178,34 +161,26 @@ void task1() {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = 0x80;
     }
-
-
 }
 
 void task2() {
     if (!lcdFlag) // if lcdFlag is zero
     {
-        lcdFlag = 1; // set it to 1
+        lcdFlag = 1; // set it to 1 -> enable task 1 to print
         
-        if(spacesToPrint == 0)
+        // If there are no more spaces to be printed it means we have to start sliding the sentence out from the left
+        if(spacesToPrint == 0)               
         sentence1.index = sentence1.index++; // increment the sentence index to start printing the next letter
         
-        if(spacesToPrint > 0)
-        spacesToPrint = spacesToPrint - 1 ;
+        if(spacesToPrint > 0)   // If there are still spaces to be printed but the printing flag is at zero
+        spacesToPrint = spacesToPrint - 1 ;     // We have to slide the sentence to the left -> put one space less
         
-        if (sentence1.index == 26) // when it gets to 24 (the length of the string) it resets to zero
+        if (sentence1.index == 26) // When it gets to 26 (the length of the string) it resets to zero the sentence index
         {
             sentence1.index = 0;
-            spacesToPrint = 14;
-            // Initiate printing mod 2
-            /*printMod = 2;
-            // Position cursor on last spot of line 1
-            while (SPI1STATbits.SPITBF == 1); // wait until not full
-            SPI1BUF = 0x80 + 15;
-            lcdCursor = SPI1BUF;*/
+            spacesToPrint = 15; // Set 15 spaces to make the "T" appears as soon as the "g" leaves the LCD
         }
-        //clearLCD();
-        spaces = spacesToPrint;
+        spaces = spacesToPrint;  // Set # of spaces to print for task1
     }
 }
 
@@ -226,7 +201,6 @@ void setLCD() {
 }
 
 // Clear function clears both rows
-
 void clearLCD() {
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0x80;
@@ -264,7 +238,6 @@ void printToLCD(char string[]) {
 }
 
 // Timer 1 setup function
-
 void tmr1_setup_period(int ms) {
     TMR1 = 0; // reset timer counter
     Fcy = (Fosc / 4.0);
@@ -275,7 +248,6 @@ void tmr1_setup_period(int ms) {
 }
 
 // Temporization function using timer 1
-
 void tmr1_wait_period() {
     while (IFS0bits.T1IF == 0) //wait for the timer to finish
     {
