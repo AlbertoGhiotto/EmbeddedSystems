@@ -70,48 +70,63 @@ long int Fcy; // number of clocks in one second = 1,843,200 clocks for each seco
 // char string[24] = "This is very long string";
 
 // Define struct with string to print and relative index
-struct sentences{
-	char sentence[25];
-	int index;
-    int printedChar ;
+
+struct sentences {
+    char sentence[40];
+    int index;
+    int printedChar;
 };
 
-struct sentences sentence = {"This is a very long string", 0, 0};
+struct sentences sentence1 = {"This is a very long string               ", 0, 0};
 
-// Define the flag to print on LCD. Set it to print
+// Define the flag to print on LCD. Set to 1 to print
 int lcdFlag = 1;
+// Define print mod flag
+int printMod = 1;
+// Define LCD cursor variable
+int lcdCursor = 0;
 
 int main() {
-    setLCD();  // Setup LCD
+    TRISBbits.TRISB0 = 0; // set the led D3 pin as output
+    TRISBbits.TRISB1 = 0; // set the led D4 pin as output
+    
+    setLCD(); // Setup LCD
     tmr1_setup_period(1000); // Wait 1 second at startup
     tmr1_wait_period();
-    
-    
-    //tmr1_setup_period(5); // Init timer to work as the heartbeat. 5 ms 
+
+
+    tmr1_setup_period(5); // Init timer to work as the heartbeat. 5 ms 
     // Set the Ns -> Heartbeat is = 5 so: 
     // N1 = 1 N2 = 250/5 = 50; N3 = 500/5 = 100
-    /*schedInfo[0].N = 1;
+    schedInfo[0].N = 1;
     schedInfo[1].N = 50;
-    schedInfo[2].N = 100;
+    //schedInfo[2].N = 100;
+    schedInfo[2].N = 1 ; //print task for debugging
     // Set n = 0. The scheduler will update it on the go
     schedInfo[0].n = 0;
     schedInfo[1].n = 0;
-    schedInfo[2].n = 0;*/
-    
+    schedInfo[2].n = 0;
+
     // while (SPI1STATbits.SPITBF == 1); // wait until not full
-     //SPI1BUF = sentence.sentence[sentence.index + sentence.printedChar];    
+    //SPI1BUF = sentence.sentence[sentence.index + sentence.printedChar];    
     clearLCD();
-     //printChar("C");
-     //printToLCD(sentence.sentence[sentence.index + sentence.printedChar]);
-     printToLCD("Ciao");
-    
-    /*
+    //printChar('F');
+    //printChar(':');
+
+    //printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]);    
+    //printToLCD(sentence1.sentence[sentence1.index + sentence1.printedChar]);
+    //printToLCD("Ciao");
+
+
     while (1) {
         scheduler();
         tmr1_wait_period();
-    }*/
-}
+    }
 
+    //while (1);
+
+    return 0;
+}
 
 void scheduler() {
     int i;
@@ -120,15 +135,14 @@ void scheduler() {
         if (schedInfo[i].n == schedInfo[i].N) {
             switch (i) {
                 case 0:
-                    task1();
+                    task1(); // Write current character to LCD
                     break;
                 case 1:
-                    task2();
+                    task2(); // Slide controller
                     break;
                 case 2:
-                    task3();
+                    task3(); // Blink led
                     break;
-                    
             }
             schedInfo[i].n = 0;
         }
@@ -136,40 +150,106 @@ void scheduler() {
 }
 
 void task1() {
-    if(lcdFlag) // Print to LCD if the flag is at 1
-    {
-    //print single element of sentence to lcd
-    printToLCD(sentence.sentence[sentence.index + sentence.printedChar]);
-    //sentence.index = sentence.index +  1 ;  // Increment index of string
-    sentence.printedChar = sentence.printedChar + 1 ;  // Increment #printed char
-    }
-   
-    if(sentence.printedChar == 15)
-    {
-    // Set the LCD priting flag to 0    
-    lcdFlag = 0;
-    // Reposition cursor on first row
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0x80;
+    switch (printMod) {
+        case 1:
+            if (lcdFlag) // Print to LCD if the flag is at 1
+            {
+                // Print single element of sentence to lcd
+                printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]);
+                // Sentence.index = sentence.index +  1 ;  // Increment index of string
+                sentence1.printedChar = sentence1.printedChar + 1; // Increment # of printed char
+            }
+            if (sentence1.printedChar == 15) {
+                // Set the LCD priting flag to 0    
+                lcdFlag = 0;
+                // Reset number of printed char
+                sentence1.printedChar = 0;
+                // Reposition cursor on first row
+                while (SPI1STATbits.SPITBF == 1); // wait until not full
+                SPI1BUF = 0x80;
+            }
+            break;
+        case 2:
+            if (lcdFlag) // Print to LCD if the flag is at 1
+            {
+                // Print single element of sentence to lcd
+                printChar(sentence1.sentence[sentence1.printedChar]);
+                // Sentence.index = sentence.index +  1 ;  // Increment index of string
+                sentence1.printedChar = sentence1.printedChar + 1; // Increment # of printed char
+            }
+            if (sentence1.printedChar == 14 ) { //14 because mod 1 already writes the sentence starting with T in position 0
+                // Set the LCD printing flag to 0    
+                //lcdFlag = 0;
+                // Reset number of printed char
+                sentence1.printedChar = 0;
+                
+                
+                // Move LCD's cursor back of one position
+                lcdCursor = lcdCursor -1;
+                while (SPI1STATbits.SPITBF == 1); // wait until not full
+                SPI1BUF = lcdCursor;
+                
+                if (lcdCursor == 0x80)
+                    printMod = 1;
+            }
+
+            break;
     }
 }
 
 void task2() {
-    if(!lcdFlag) // if lcdFlag is zero
+    if (!lcdFlag) // if lcdFlag is zero
     {
         lcdFlag = 1; // set it to 1
-        sentence.index = sentence.index++;   // increment the sentence index to start printing the next letter
-        if (sentence.index == 24)  // when it gets to 24 (the length of the string) it resets to zero
-            sentence.index = 0;
+        sentence1.index = sentence1.index++; // increment the sentence index to start printing the next letter
+        if (sentence1.index == 26) // when it gets to 24 (the length of the string) it resets to zero
+        {
+            sentence1.index = 0;
+            // Initiate printing mod 2
+            printMod = 2;
+            // Position cursor on last spot of line 1
+            while (SPI1STATbits.SPITBF == 1); // wait until not full
+            SPI1BUF = 0x80 + 15;
+            lcdCursor = SPI1BUF;
+        }
+        //clearLCD();
     }
-    
 }
 
 void task3() {
+    /*//Move cursor to second row
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = 0xC0;
+
+    if (printMod == 1)
+        printToLCD("Mod one");
+    else if (printMod == 2)
+        printToLCD("Mod two");
+    else
+        printToLCD("Mod error");*/
+    
+   
+     /*   // code to blink LED D3
+        if (LATBbits.LATB0 == 1)
+            LATBbits.LATB0 = 0;
+        else
+            LATBbits.LATB0 = 1;
+
+        tmr1_wait_period();*/
+
+    if (printMod == 1) 
+    {
+        LATBbits.LATB0 = 0; // D3 Led off
+        LATBbits.LATB1 = 1; // D4 Led on
+    }
+    else if (printMod == 2)
+    {
+        LATBbits.LATB0 = 1; // D3 Led on
+        LATBbits.LATB1 = 0; // D4 Led off
+    }
+    
     // do something for TASK 3
 }
-
-
 
 void setLCD() {
     SPI1CONbits.MSTEN = 1; // master mode
@@ -180,6 +260,7 @@ void setLCD() {
 }
 
 // Clear function clears both rows
+
 void clearLCD() {
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0x80;
@@ -196,16 +277,15 @@ void clearLCD() {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }
-    
     // Reposition cursor on first row
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0x80;
 }
 
-void printChar(char element) {    
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = element;
-    }
+void printChar(char element) {
+    while (SPI1STATbits.SPITBF == 1); // wait until not full
+    SPI1BUF = element;
+}
 
 void printToLCD(char string[]) {
     int i;
@@ -237,5 +317,3 @@ void tmr1_wait_period() {
 
     IFS0bits.T1IF = 0; //set the timer flag to zero to be notified of a new event    
 }
-
-
