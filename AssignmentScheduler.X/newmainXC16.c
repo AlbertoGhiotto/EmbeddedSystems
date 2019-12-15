@@ -34,7 +34,6 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-
 #include "xc.h"
 #include <stdio.h>
 #include <string.h>
@@ -48,7 +47,6 @@ typedef struct {
 
 heartbeat schedInfo[MAX_TASKS];
 
-//void InitDevice();
 // Timer functions
 void tmr1_setup_period(int ms);
 void tmr1_wait_period();
@@ -68,17 +66,14 @@ void task3();
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy; // number of clocks in one second = 1,843,200 clocks for each second
 
-// char string[24] = "This is very long string";
-
 // Define struct with string to print and relative index
-
 struct sentences {
-    char sentence[40];
+    char sentence[26];
     int index;
     int printedChar;
 };
 
-struct sentences sentence1 = {"This is a very long string               ", 0, 0};
+struct sentences sentence1 = {"This is a very long string", 0, 0};
 
 // Define the flag to print on LCD. Set to 1 to print
 int lcdFlag = 1;
@@ -97,7 +92,7 @@ int main() {
     tmr1_setup_period(1000); // Wait 1 second at startup
     tmr1_wait_period();
 
-    tmr1_setup_period(5); // Init timer to work as the heartbeat. 5 ms 
+    tmr1_setup_period(5); // Init timer to work as the heartbeat: 5 ms 
     // Set the Ns -> Heartbeat is = 5 so: 
     // N1 = 1 N2 = 250/5 = 50; N3 = 500/5 = 100
     schedInfo[0].N = 1;
@@ -149,8 +144,10 @@ void task1() {
     }
     else if (lcdFlag) // Print to LCD if the flag is at 1
     {
-        // Print single element of sentence to LCD
-        printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]);
+        if((sentence1.index + sentence1.printedChar) > 25)  // This check avoids to address not initialized memory areas when sliding
+           printChar(' ');
+        else
+            printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]); // Print single element of sentence to LCD
         // Sentence.index = sentence.index +  1 ;  // Increment index of string
         sentence1.printedChar = sentence1.printedChar + 1; // Increment # of printed char
     }
@@ -215,6 +212,7 @@ void setLCD() {
     SPI1STATbits.SPIEN = 1; // enable SPI
 }
 
+// Single char print to LCD
 void printChar(char element) {
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = element;
