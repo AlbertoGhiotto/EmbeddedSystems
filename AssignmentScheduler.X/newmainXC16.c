@@ -55,9 +55,10 @@ void tmr1_wait_period();
 
 // LCD functions
 void printChar(char element);
-void printToLCD(char string[]);
-void clearLCD();
 void setLCD();
+
+// Timer for s5 deboucing
+void tmr2_setup_period(int ms);
 
 void scheduler();
 void task1();
@@ -81,7 +82,8 @@ struct sentences sentence1 = {"This is a very long string               ", 0, 0}
 
 // Define the flag to print on LCD. Set to 1 to print
 int lcdFlag = 1;
-
+// Define the flag for the s5 button interrupt
+int s5Flag = 1; // 1 means not pressed -> sliding enabled
 // Variables for sliding motion
 int spacesToPrint = 0;
 int spaces = 0;
@@ -106,9 +108,8 @@ int main() {
     schedInfo[1].n = 0;
     schedInfo[2].n = 0;
     
+    IEC0bits.INT0IE = 1; // Enable interrupt of button s5
     
-    //clearLCD();
-
     while (1) {
         scheduler();
         tmr1_wait_period();
@@ -127,6 +128,7 @@ void scheduler() {
                     task1(); // Write current character to LCD
                     break;
                 case 1:
+                    if (s5Flag)
                     task2(); // Slide controller
                     break;
                 case 2:
@@ -147,13 +149,13 @@ void task1() {
     }
     else if (lcdFlag) // Print to LCD if the flag is at 1
     {
-        // Print single element of sentence to lcd
+        // Print single element of sentence to LCD
         printChar(sentence1.sentence[sentence1.index + sentence1.printedChar]);
         // Sentence.index = sentence.index +  1 ;  // Increment index of string
         sentence1.printedChar = sentence1.printedChar + 1; // Increment # of printed char
     }
     if ((sentence1.printedChar + spacesToPrint) == 16) { 
-        // Set the LCD priting flag to 0    
+        // Set the LCD printing flag to 0    
         lcdFlag = 0;
         // Reset number of printed char
         sentence1.printedChar = 0;
@@ -192,6 +194,19 @@ void task3() {
         LATBbits.LATB0 = 1;
 }
 
+// S5 button ISR
+void __attribute__((__interrupt__, _auto_psv_)) _INT0Interrupt() {
+    IFS0bits.INT0IF = 0; // reset interrupt flag
+    
+    if (s5Flag == 0)
+        s5Flag = 1;
+    else
+        s5Flag = 0;
+    
+    IEC0bits.INT0IE = 0; // Disable interrupt of button s5
+    tmr2_setup_period(15);   // Start debouncing timer
+}
+
 void setLCD() {
     SPI1CONbits.MSTEN = 1; // master mode
     SPI1CONbits.MODE16 = 0; // 8-bit mode
@@ -200,41 +215,9 @@ void setLCD() {
     SPI1STATbits.SPIEN = 1; // enable SPI
 }
 
-// Clear function clears both rows
-void clearLCD() {
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0x80;
-
-    int i;
-    for (i = 0; i < 16; i++) { //should be 16 since there are only 16 columns
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = ' ';
-    }
-    //Move cursor to second row
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0xC0;
-    for (i = 0; i < 16; i++) { //should be 16 since there are only 16 columns
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = ' ';
-    }
-    // Reposition cursor on first row
-    while (SPI1STATbits.SPITBF == 1); // wait until not full
-    SPI1BUF = 0x80;
-}
-
 void printChar(char element) {
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = element;
-}
-
-void printToLCD(char string[]) {
-    int i;
-    int n = strlen(string);
-
-    for (i = 0; i < n; i++) {
-        while (SPI1STATbits.SPITBF == 1); // wait until not full
-        SPI1BUF = string[i];
-    }
 }
 
 // Timer 1 setup function
@@ -254,4 +237,16 @@ void tmr1_wait_period() {
     }
 
     IFS0bits.T1IF = 0; //set the timer flag to zero to be notified of a new event    
+}
+
+// Debouncing timer
+void tmr2_setup_period(int ms)
+{
+    TMR2 = 0; // reset timer counter
+    Fcy = (Fosc / 4.0);
+    PR2 = (Fcy) / 64.0 * (ms / 1000.0); //must be function of PR1
+
+    T2CONbits.TCKPS = 0b10; // prescaler 1:64    -> up to a bit more than 2 seconds
+    T2CONbits.TON = 1; // starts the timer!
+    IEC0bits.INT0IE = 1; // Re - enable interrupt of button s5
 }
