@@ -8,9 +8,9 @@
 
 void setupPWM ();
 int satRPM(int rpm);
-int refreshPWMvalue(int* n1, int* n2);
-short int refreshPWMRange(int min, int max);
-int sign(int x);
+int normalizeDC(int* rpm1, int* rpm2);
+int updateRange(int min, int max);
+//int sign(int x);
 
 #endif	/* XC_HEADER_PWM_H */
 

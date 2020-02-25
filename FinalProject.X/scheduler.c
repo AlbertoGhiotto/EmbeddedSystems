@@ -20,6 +20,8 @@ void init_heartbeat_n(){
     schedInfo[4].n = 0;
     schedInfo[5].n = 0;
    */ 
+    // Heartbeat is = 100, hence: 
+    // N[i] = period of task / heartbeat
     schedInfo[0].N = 1;     // UART
     schedInfo[1].N = 1;     // Temp acquisition
     schedInfo[2].N = 10;    // Temp average and send

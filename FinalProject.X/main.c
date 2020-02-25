@@ -38,5 +38,22 @@
 
 int main(void) {
     
+    int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
+    tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 
+    
+    tmr2_setup_period(5000);     // Init timer for timeout mode
+    
+    // loop
+    while (1) {
+        
+        scheduler();
+   
+        
+       if(tmr1_wait_period()){
+            //writeStringLCD("hb expired!");
+            while(1);
+       }
+    }   
+    
     return 0;
 }
