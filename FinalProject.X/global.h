@@ -13,6 +13,9 @@ long int Fcy = Fosc / 4; // number of clocks in one second = 1,843,200 clocks fo
 extern int maxRPM;
 extern int minRPM;
 
+extern int actualRPM1;
+extern int actualRPM2;
+
 
 #endif	/* XC_HEADER_GLOBAL_H */
 

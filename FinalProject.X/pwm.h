@@ -3,8 +3,8 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define MIN_ABS (-10000)    // Min value for each motor -> 0% duty cycle
-#define MAX_ABS (+10000)    // Max value for each motor -> 100% duty cycle
+#define MIN_DC (-10000)    // Min value for each motor -> 0% duty cycle
+#define MAX_DC (+10000)    // Max value for each motor -> 100% duty cycle
 
 void setupPWM ();
 int satRPM(int rpm);

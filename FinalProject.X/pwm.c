@@ -37,7 +37,7 @@ void setupPWM() {
     
     PTCONbits.PTEN = 1;     // Turns on the PWM time base module
     
-    refreshPWMvalue(&appliedN1,&appliedN2);
+    normalizeDC(&actualRPM1,&actualRPM2);
 }
 
 int updateRange(int min, int max){
@@ -58,8 +58,7 @@ int updateRange(int min, int max){
 // Function to compute the duty cycle range
 int normalizeDC(int* rpm1, int* rpm2){
     long int newPTPER = PTPER;
-    float temp;
-    
+
     // Define the duty cycle
     float dutyCycle1 = ((*rpm1 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
     float dutyCycle2 = ((*rpm2 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
