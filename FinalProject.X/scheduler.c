@@ -10,13 +10,6 @@
 #include "scheduler.h"
 #include "global.h"
 
-void scheduler() {
-    int i;
-    
-    
-    return 0;
-}
-
 void init_heartbeat_n(){
     // Set n = 0. The scheduler will update it on the go. ------------------ Already taken care of in definition
     /*
