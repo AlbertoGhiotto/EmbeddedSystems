@@ -1,5 +1,5 @@
 /*
- * File:   scheduler.c
+ * File:   timer.c
  * Author:   Filippo Gandolfi    S4112879
  *           Alberto Ghiotto     S4225586
  *
@@ -58,7 +58,7 @@ void tmr2_wait_period() {
     IFS0bits.T2IF = 0;                      // Set the timer flag to zero to be notified of a new event    
 }
 
-// Timer 2 ISR
+// Timer 2 ISR - Set motor velocity to zeros and blink led D4
 void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt() {
     IEC0bits.T2IE = 1;               // Reset interrupt flag
     // Set timeout state

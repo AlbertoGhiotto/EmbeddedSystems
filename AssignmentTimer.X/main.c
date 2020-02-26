@@ -56,7 +56,6 @@ void tmr1_wait_period();
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy;            // number of clocks in one second = 1,843,200 clocks for each second
  
-
 //I need to support timer up to at leat 1 second -> I can put at max 65535 in a register 
 // hence I set a prescaler of 64 -> 28800 clock step for each second -> up to a bit more than 2 seconds
 
