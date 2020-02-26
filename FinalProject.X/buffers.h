@@ -12,7 +12,4 @@ int tempIndex = 0;
 
 void writeOnTempBuff(float data);       // Function to write on temp buffer
 
-
-
-
 #endif	/* XC_HEADER_BUFFER_H */
