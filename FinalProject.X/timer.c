@@ -9,10 +9,6 @@
 #include "xc.h"
 #include "global.h"
 
-int main(void) {
-    return 0;
-}
-
 // Scheduler Timer - setup function
 void tmr1_setup_period(int ms) {
     TMR1 = 0;               // Reset timer counter
@@ -31,6 +27,14 @@ void tmr1_wait_period() {
     {
     }
     IFS0bits.T1IF = 0;          // Set the timer flag to zero to be notified of a new event    
+}
+
+void tmr2_restart_timer(){
+    T2CONbits.TON = 0;      // Stops the timer
+    IEC0bits.T2IE = 1;      // Enable timer 2 interrupt
+    TMR2 = 0;
+    IFS0bits.T2IF = 0;      // Set the timer flag to zero to be notified of a new event
+    T2CONbits.TON = 1;      // Starts the timer
 }
 
 // Timeout mode timer - setup function
@@ -54,12 +58,11 @@ void tmr2_wait_period() {
     IFS0bits.T2IF = 0;                      // Set the timer flag to zero to be notified of a new event    
 }
 
-// T2 ISR
+// Timer 2 ISR
 void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt() {
     IEC0bits.T2IE = 1;               // Reset interrupt flag
-    
     // Set timeout state
-    //boardState = STATE_TIMEOUT;
+    board_state = 1;
     // Set motor velocity to zero
     int rpm1 = 0;
     int rpm2 = 0;
