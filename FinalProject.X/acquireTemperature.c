@@ -8,6 +8,8 @@
 
 #include "xc.h"
 #include "global.h"
+#include "acquireTemperature.h"
+#include "buffers.h"
 
 #define VMIN 0.0                
 #define VMAX 5.0
@@ -20,8 +22,8 @@ void acquireTemp() {
     
     degTemp = getTemp();
     
-    sprintf(temp, "%2.2f", degTemp);
-    // TODO: save temp on buffer to be averaged every 1 hz
+    // Save temp on buffer to be averaged every 1 hz
+    writeOnTempBuff(degTemp);
     return;
 }
 
