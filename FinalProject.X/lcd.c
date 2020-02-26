@@ -43,10 +43,6 @@ void clearLCD() {
 }
 
 void setTitles(){
-    char mander[5] = "STA: ";
-    char meleon[5] = "TEM: ";
-    char izard[5]  = "RPM: ";
-    
     printToLCD(mander, STA);
     printToLCD(meleon, TEM);
     printToLCD(izard,  RPM);

@@ -8,11 +8,15 @@
 #define TEM 0x88
 #define RPM 0xC0
 
-void printTemp(char string[]);
-void printStatus(char string[]);
-void printRPM(char string[]);
+void printToLCD(char string[], int position);
+void setTitles();
 void setLCD();
 void clearLCD();
+
+// String to print on LCD before data
+char mander[5] = "STA: ";
+char meleon[5] = "TEM: ";
+char izard[5]  = "RPM: ";   
 
 #endif	/* XC_HEADER_LCD_H */
 
