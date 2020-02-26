@@ -45,10 +45,8 @@ int main(void) {
     
     // loop
     while (1) {
-        
-        scheduler();
+       scheduler();
    
-        
        if(tmr1_wait_period()){
             //writeStringLCD("hb expired!");
             while(1);

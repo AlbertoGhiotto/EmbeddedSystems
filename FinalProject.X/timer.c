@@ -38,9 +38,9 @@ void tmr2_setup_period(int ms)
 {
     TMR2 = 0;                               // Reset timer counter
     //Fcy = (Fosc / 4.0); // already global
-    PR2 = (Fcy) / 64.0 * (ms / 1000.0); 
-    // TODO: set prescaler to allow 5 seconds
-    T2CONbits.TCKPS = 0b10;                 // Prescaler 1:64    -> up to a bit more than 2 seconds
+    PR2 = (Fcy) / 256.0 * (ms / 1000.0); 
+    // TODO: set prescaler to allow 5 seconds -> set it to 256. 7200 clock step for each second -> up to
+    T2CONbits.TCKPS = 0b11;                 // Prescaler 1:256    
     T2CONbits.TON = 1;                      // Starts the timer!
     //IEC0bits.INT0IE = 1;                  // Re - enable interrupt of button s5
     IEC0bits.T2IE = 1;                      // Enable interrupt of timer t2
