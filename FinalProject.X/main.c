@@ -43,6 +43,7 @@ int main(void) {
     
     tmr2_setup_period(5000);     // Init timer for timeout mode
     
+    // Put some temporization function for waiting function startup (e.g for ADC)
     // loop
     while (1) {
        scheduler();
