@@ -11,8 +11,6 @@
 #include "pwm.h"
 //#include headers
 
-
-
 void setupPWM() { 
     float f_pwm = 1000; // The frequency must be 1 kHz
     float T_pwm = 1/f_pwm;
@@ -47,7 +45,6 @@ int updateRange(int min, int max){
     if (max < min || min < MIN_PROP_VEL || max > MAX_PROP_VEL || (min <= 0 && max >= 0)){
         return 1; // Negative ack
     }
-    
     // Update new values
     minRPM = min;
     maxRPM = max;
