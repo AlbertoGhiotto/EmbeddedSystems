@@ -60,7 +60,7 @@ void tmr2_wait_period() {
 
 // Timer 2 ISR - Set motor velocity to zeros and blink led D4
 void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt() {
-    IEC0bits.T2IE = 1;               // Reset interrupt flag
+    IEC0bits.T2IE = 0;         // Disable interrupt of timer t2
     // Set timeout state
     board_state = 1;
     // Set motor velocity to zero
