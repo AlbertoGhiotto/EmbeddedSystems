@@ -11,7 +11,6 @@
 #include "buffers.h"
 #include "toUart.h"
 
-
 void setUART() {
     U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1
      //U2BRG = 115200;
@@ -28,4 +27,8 @@ void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {
     IFS1bits.U2RXIF = 0;                            // Reset rx interrupt flag
     int val = U2RXREG;                              // Read from rx register
     writeOnCircBuffer(&transmissionBuffer, val);    // Save value in buffer
+}
+
+int sendToPC(char* msg){
+    
 }
