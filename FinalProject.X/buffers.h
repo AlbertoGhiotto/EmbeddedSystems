@@ -10,6 +10,20 @@
 float temp[TEMPBUFFDIM]  = {0.0};       // Temperature buffer
 int tempIndex = 0;
 
-void writeOnTempBuff(float data);       // Function to write on temp buffer
+typedef struct {
+    int buffer[TXBUFFDIM];
+    int readIndex;
+    int writeIndex;
+} circularBuffer;
+
+circularBuffer transmissionBuffer;
+
+// Function to write on temp buffer
+void writeOnTempBuff(float data);       
+
+// Function to write on transmission buffer
+void writeOnCircBuffer(circularBuffer *buffer, int data);
+// Function to read content of transmission buffer
+void readCircBuffer(circularBuffer *buffer, int *data);
 
 #endif	/* XC_HEADER_BUFFER_H */

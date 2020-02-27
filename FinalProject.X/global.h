@@ -10,8 +10,8 @@
 long int Fosc = 7372800; // 7.3728 MHz
 long int Fcy = Fosc / 4; // number of clocks in one second = 1,843,200 clocks for each second
 
-// Board state variable
-enum state{HALT, TIMEOUT, CONTROLLED};
+// Board state variable: Controlled, Timeout, Halt(safe mode))
+enum state{C, T, H};
 enum state board_state;
 
 // RPM setting variables
