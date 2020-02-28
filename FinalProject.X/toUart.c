@@ -31,4 +31,17 @@ void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {
 
 int sendToPC(char* msg){
     
+    char sendMsg[sendDIM];
+    
+    sprintf(sendMsg, "$%s*" ,msg);      // $ and * are required from msgs
+    
+    for (int i = 0; i < sendDIM; i++){
+        if(U2STAbits.UTXBF == 0)    // If buffer is not full
+            U2TXREG = sendMsg[i];
+    }
+        
+    while(U2STAbits.UTXBF == 1){}     // Wait for space in buffer
+    
+    U2STAbits.OERR = 0;               // Reset buffer overrun error
+    
 }
