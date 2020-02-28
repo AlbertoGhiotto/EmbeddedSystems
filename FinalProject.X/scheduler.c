@@ -22,12 +22,12 @@ void init_heartbeat_n(){
    */ 
     // Heartbeat is = 100, hence: 
     // N[i] = period of task / heartbeat
-    schedInfo[0].N = 1;     // UART
-    schedInfo[1].N = 1;     // Temp acquisition
-    schedInfo[2].N = 10;    // Temp average and send
-    schedInfo[3].N = 2;     // Feedback msg to pc
-    schedInfo[4].N = 10;    // Blinking leds
-    schedInfo[5].N = 1;     //  LCD update
+    schedInfo[0].N = 1;     // UART                     10 Hz
+    schedInfo[1].N = 1;     // Temp acquisition         10 Hz
+    schedInfo[2].N = 10;    // Temp average and send     1 Hz
+    schedInfo[3].N = 2;     // Feedback msg to pc        5 Hz 
+    schedInfo[4].N = 10;    // Blinking leds             1 Hz
+    schedInfo[5].N = 1;     // LCD update               10 Hz
 }
 
 
