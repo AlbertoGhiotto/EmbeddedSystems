@@ -26,6 +26,6 @@ int sendMCFBK(void){
 sprintf(msg, "MCFBK,%d,%d,%d", actualRPM1, actualRPM2, board_state);
 
 // Send message to PC
-//sendToPc(msg);
+sendToPC(msg);
 
 }
