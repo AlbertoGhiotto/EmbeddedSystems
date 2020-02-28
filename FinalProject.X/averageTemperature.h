@@ -9,7 +9,7 @@ int averageTemperature(void);
 float avgTemp = 0;
 
 //  Support variable to store MCTEM message
-char pcMsg[10];
+char pcMsg[15];
 
 // Support variable to print on LCD
 char printTemp[4];
