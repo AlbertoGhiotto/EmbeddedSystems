@@ -30,7 +30,6 @@ void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {
 }
 
 int sendToPC(char* msg){
-    
     char sendMsg[sendDIM];
     
     sprintf(sendMsg, "$%s*" ,msg);      // $ and * are required from msgs
@@ -44,4 +43,5 @@ int sendToPC(char* msg){
     
     U2STAbits.OERR = 0;               // Reset buffer overrun error
     
+    return 0;
 }
