@@ -10,6 +10,8 @@
 #include "buffers.h"
 #include "global.h"
 #include "lcd.h"
+#include "toUart.h"
+#include "averageTemperature.h"
 
 int averageTemperature(void) {
     // Compute average of last 10 temperature readings contained in the buffers
@@ -18,7 +20,9 @@ int averageTemperature(void) {
     }
     avgTemp = avgTemp / TEMPBUFFDIM;
 
-    // TODO: Send data to pc
+    // Send data to pc
+    sprintf(pcMsg,"MCTEM,%.2f",avgTemp);
+    sendToPC(pcMsg);
 
     // Print data on LCD
     sprintf(printTemp, "%.2f", avgTemp);

@@ -5,7 +5,13 @@
 
 int averageTemperature(void);
 
+// Variable to store computed average temperature
 float avgTemp = 0;
+
+//  Support variable to store MCTEM message
+char pcMsg[10];
+
+// Support variable to print on LCD
 char printTemp[4];
 
 #endif	/* XC_HEADER_AVGTEMP_H */
