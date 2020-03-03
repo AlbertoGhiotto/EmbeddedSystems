@@ -59,4 +59,5 @@ void tmr3_setup_period(int ms){
 // Function enabling flag of buttons
 void buttonSetup(){
     IEC0bits.T2IE = 1; // Enable interrupt of deboucing timer t2
+    // To be filled
 }
