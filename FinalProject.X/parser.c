@@ -1,5 +1,5 @@
 /*
- * File:   fromUart.c
+ * File:   parser.c
  * Author:   Filippo Gandolfi    S4112879
  *           Alberto Ghiotto     S4225586
  *
