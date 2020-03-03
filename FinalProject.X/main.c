@@ -35,8 +35,11 @@
 // Use project enums instead of #define for ON and OFF.
 
 #include "xc.h"
+#include "parser.h"
 
 int main(void) {
+    // All setup and initializations
+    setParser();
     
     int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
     tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 
