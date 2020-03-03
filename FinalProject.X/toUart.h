@@ -3,7 +3,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define sendDIM 20
+#define sendDIM 25
 
 // Setup uart
 void setUART();

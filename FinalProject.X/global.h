@@ -14,11 +14,16 @@ long int Fcy = Fosc / 4; // number of clocks in one second = 1,843,200 clocks fo
 enum state{C, T, H};
 enum state board_state;
 
+// Board state definitions
+#define STATE_CONTROLLED    0
+#define STATE_TIMEOUT       1
+#define STATE_SAFE          2
+
 // RPM setting variables
-extern int maxRPM;
-extern int minRPM;
-extern int actualRPM1;
-extern int actualRPM2;
+int maxRPM;
+int minRPM;
+int actualRPM1;
+int actualRPM2;
 
 #endif	/* XC_HEADER_GLOBAL_H */
 

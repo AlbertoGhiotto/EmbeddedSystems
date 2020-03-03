@@ -20,5 +20,8 @@ void setParser();
 
 int parse_byte(parser_state* ps, char byte);
 
+
+parser_state pstate;
+
 #endif	/* PARSER_H */
 
