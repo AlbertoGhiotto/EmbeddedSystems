@@ -4,9 +4,8 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 int averageTemperature(void);
-
 // Variable to store computed average temperature
-float avgTemp = 0;
+double avgTemp = 0;
 
 //  Support variable to store MCTEM message
 char pcMsg[15];

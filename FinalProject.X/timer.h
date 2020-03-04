@@ -13,7 +13,7 @@ void tmr2_wait_period();
 void tmr2_restart_timer();
 
 // Timer 2 ISR
-void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt();
+void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt();
 
 #endif	/* XC_HEADER_TIMER_H */
 

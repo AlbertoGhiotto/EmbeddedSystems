@@ -8,6 +8,7 @@
 
 #include "xc.h"
 #include "global.h"
+#include "pwm.h"
 
 // Scheduler Timer - setup function
 void tmr1_setup_period(int ms) {
@@ -59,7 +60,7 @@ void tmr2_wait_period() {
 }
 
 // Timer 2 ISR - Set motor velocity to zeros and blink led D4
-void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt() {
+void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt() {
     IEC0bits.T2IE = 0;         // Disable interrupt of timer t2
     // Set timeout state
     board_state = 1;

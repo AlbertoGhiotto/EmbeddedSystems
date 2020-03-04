@@ -33,7 +33,7 @@
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
-
+#include <stdio.h>
 #include "xc.h"
 #include "acquireTemperature.h"
 #include "averageTemperature.h"
@@ -62,6 +62,9 @@ int main(void) {
     setPWM();
     init_heartbeat_n();
     setUART();
+    
+    Fosc = 7372800;
+    Fcy  = 1843200;
     
     int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
     tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 

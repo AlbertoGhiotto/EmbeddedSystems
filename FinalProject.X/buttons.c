@@ -12,7 +12,7 @@
 #include "global.h"
 
 // S5 button ISR
-void __attribute__((__interrupt__, _auto_psv_)) _INT0Interrupt() {
+void __attribute__((__interrupt__, __auto_psv__)) _INT0Interrupt() {
     IFS0bits.INT0IF = 0; // reset interrupt flag
     IEC0bits.INT0IE = 0; // Disable interrupt of button s5
     
@@ -30,7 +30,7 @@ void __attribute__((__interrupt__, _auto_psv_)) _INT0Interrupt() {
 }
 
 // S6 buttons ISR
-void __attribute__((__interrupt__, _auto_psv_)) _INT1Interrupt(){
+void __attribute__((__interrupt__, __auto_psv__)) _INT1Interrupt(){
     IFS1bits.INT1IF = 0;        // reset interrupt flag
     IEC1bits.INT1IE = 0;        // Disable interrupt of button s5
     
@@ -40,7 +40,7 @@ void __attribute__((__interrupt__, _auto_psv_)) _INT1Interrupt(){
 }
 
 // Debouncing timer ISR
-void __attribute__((__interrupt__, _auto_psv_)) _T3Interrupt() {
+void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt() {
     IFS0bits.T3IF = 0; // reset interrupt flag of timer 3
     
     IFS0bits.INT0IF = 0; // reset interrupt flag of button s5
