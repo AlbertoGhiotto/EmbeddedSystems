@@ -44,7 +44,7 @@ float getTemp(){
     return degTemp;
 }
 
-void setupADC(){
+void setADC(){
     ADCON1bits.ASAM = 0;    // Set manual start
     ADCON1bits.SSRC = 7;    // Selects how the conversion should start (0 = manual, 7 = internal counter)
 

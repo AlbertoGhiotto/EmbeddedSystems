@@ -14,7 +14,7 @@ void __attribute__((__interrupt__, _auto_psv_)) _T2Interrupt();
 void tmr3_setup_period(int ms);
 
 // Function enabling flag of buttons
-void buttonSetup();
+void setButton();
 
 // Flag s6 pressed
 bool flagS6 = S6NOTPRESSED;

@@ -5,7 +5,7 @@
 
 void acquireTemp();
 float getTemp();
-void setupADC();
+void setADC();
 
 #endif	/* XC_HEADER_ACQTEMP_H */
 

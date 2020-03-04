@@ -6,7 +6,7 @@
 #define MIN_DC (-10000)    // Min value for each motor -> 0% duty cycle
 #define MAX_DC (+10000)    // Max value for each motor -> 100% duty cycle
 
-void setupPWM ();
+void setPWM();
 int satRPM(int rpm);
 int normalizeDC(int* rpm1, int* rpm2);
 int updateRange(int min, int max);

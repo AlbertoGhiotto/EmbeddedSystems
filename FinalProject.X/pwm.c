@@ -11,7 +11,7 @@
 #include "pwm.h"
 //#include headers
 
-void setupPWM() { 
+void setPWM() { 
     float f_pwm = 1000; // The frequency must be 1 kHz
     float T_pwm = 1/f_pwm;
     

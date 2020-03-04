@@ -60,7 +60,11 @@ void tmr3_setup_period(int ms){
 }
 
 // Function enabling flag of buttons
-void buttonSetup(){
-    IEC0bits.T2IE = 1; // Enable interrupt of deboucing timer t2
-    // To be filled
+void setButton(){
+    IEC0bits.T3IE = 1; // Enable interrupt of debouncing timer t3
+    
+    IFS0bits.INT0IF = 0; //reset interrupt flag for S5 button
+    IFS1bits.INT1IF = 0; //reset interrupt flag for S6 button
+    IEC0bits.INT0IE = 1; //enable interrupt for S5 button
+    IEC1bits.INT1IE = 1; //enable interrupt for S6 button
 }

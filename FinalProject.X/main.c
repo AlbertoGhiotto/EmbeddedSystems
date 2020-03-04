@@ -35,11 +35,33 @@
 // Use project enums instead of #define for ON and OFF.
 
 #include "xc.h"
+#include "acquireTemperature.h"
+#include "averageTemperature.h"
+#include "blinkLeds.h"
+#include "buffers.h"
+#include "buttons.h"
+#include "fromUart.h"
+#include "global.h"
+#include "lcd.h"
 #include "parser.h"
+#include "pwm.h"
+#include "scheduler.h"
+#include "sendMCFBK.h"
+#include "timer.h"
+#include "toUart.h"
 
 int main(void) {
     // All setup and initializations
+    setADC();
+    setLedPins();
+    initTxBuffer(&transmissionBuffer);
+    setButton();
+    setTitles();
+    setLCD();
     setParser();
+    setPWM();
+    init_heartbeat_n();
+    setUART();
     
     int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
     tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 
@@ -50,11 +72,6 @@ int main(void) {
     // loop
     while (1) {
        scheduler();
-   
-       if(tmr1_wait_period()){
-            //writeStringLCD("hb expired!");
-            while(1);
-       }
     }   
     
     return 0;

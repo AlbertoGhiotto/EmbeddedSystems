@@ -40,7 +40,6 @@ int fromUart(void);
 int decodeMessage(char* msg_type, char* msg_payload);
 
 // Function to send ACK messages and re-enable interrupt
-void sendACK_enInt(int decodeFlag)
+void sendACK_enInt(int decodeFlag);
 
 #endif	/* XC_HEADER_FROMUART_H */
-
