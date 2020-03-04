@@ -16,7 +16,9 @@ typedef struct {
     int writeIndex;
 } circularBuffer;
 
-circularBuffer transmissionBuffer;
+circularBuffer transmissionBuffer;      // Transmission buffer
+
+void initTxBuffer(circularBuffer *buffer);
 
 // Function to write on temp buffer
 void writeOnTempBuff(float data);       
@@ -25,5 +27,7 @@ void writeOnTempBuff(float data);
 void writeOnCircBuffer(circularBuffer *buffer, int data);
 // Function to read content of transmission buffer
 void readCircBuffer(circularBuffer *buffer, int *data);
+
+int sizeBuf(circularBuffer *buffer);
 
 #endif	/* XC_HEADER_BUFFER_H */
