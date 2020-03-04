@@ -16,7 +16,10 @@ void clearLCD();
 // String to print on LCD before data
 char mander[5] = "STA: ";
 char meleon[5] = "TEM: ";
-char izard[5]  = "RPM: ";   
+char izard[5]  = "RPM: "; 
+
+// Support variable for printing second row
+char print[10];
 
 #endif	/* XC_HEADER_LCD_H */
 

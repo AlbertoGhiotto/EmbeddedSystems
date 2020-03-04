@@ -9,7 +9,44 @@
 
 #include "xc.h"
 #include "lcd.h"
+#include "global.h"
+#include "buttons.h"
 #include <string.h>
+
+void lcdOutput(){
+    
+    if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
+    {
+        clearLCD();
+        setTitles();                    // TBD: optimize!!
+        // First part of first row: board state.  Second part of first row is printed in averageTemperature.c
+        switch (board_state){
+            case STATE_CONTROLLED:
+                printToLCD('C', STA + 0x04);
+                break;
+            case STATE_TIMEOUT:
+                printToLCD('T', STA + 0x04);
+                break;
+            case STATE_SAFE:
+                printToLCD('H', STA + 0x04);
+                break;
+        }
+        // Second row: rpm
+        sprintf(printf, "%d,%d", actualRPM1, actualRPM2);
+        printToLCD(printf, RPM + 0x04);
+    }
+    else                // When S6 is clicked
+    {
+        clearLCD();
+        // First row: saturation values
+        sprintf(print, "SAT MIN: %d MAX: %d", minRPM, maxRPM )
+        printToLCD(print, STA);
+        
+        // Second row: pwm duty cycle values
+        sprintf(print, "RPM: %.2f,%.2f", dutyCycle1, dutyCycle2);
+        printToLCD(print, RPM );
+    }
+}
 
 void setLCD() {
     SPI1CONbits.MSTEN = 1; // master mode
@@ -45,6 +82,13 @@ void clearLCD() {
 void setTitles(){
     printToLCD(mander, STA);
     printToLCD(meleon, TEM);
+    printToLCD(izard,  RPM);
+}
+
+void setTitlesS6(){
+    printToLCD(izarditeX, STA);
+    printToLCD(izarditeY, STA + );
+    
     printToLCD(izard,  RPM);
 }
 

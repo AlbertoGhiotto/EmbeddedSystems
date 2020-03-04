@@ -12,5 +12,8 @@ int normalizeDC(int* rpm1, int* rpm2);
 int updateRange(int min, int max);
 //int sign(int x);
 
+float dutyCycle1;
+float dutyCycle2;
+
 #endif	/* XC_HEADER_PWM_H */
 

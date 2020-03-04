@@ -60,8 +60,8 @@ int normalizeDC(int* rpm1, int* rpm2){
     *rpm2 = satRPM(*rpm2);
     
     // Define the duty cycle
-    float dutyCycle1 = ((*rpm1 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
-    float dutyCycle2 = ((*rpm2 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
+    dutyCycle1 = ((*rpm1 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
+    dutyCycle2 = ((*rpm2 - MIN_DC) * 2 * newPTPER ) / (MAX_DC - MIN_DC);
     // Assign it to the corresponding output pins
     PDC2 = dutyCycle1;
     PDC3 = dutyCycle2;

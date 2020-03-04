@@ -20,8 +20,8 @@ enum state board_state;
 #define STATE_SAFE          2
 
 // RPM setting variables
-int maxRPM;
 int minRPM;
+int maxRPM;
 int actualRPM1;
 int actualRPM2;
 
