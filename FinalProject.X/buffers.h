@@ -27,7 +27,7 @@ void writeOnTempBuff(float data);
 // Function to write on transmission buffer
 void writeOnCircBuffer(circularBuffer *buffer, int data);
 // Function to read content of transmission buffer
-void readCircBuffer(circularBuffer *buffer, int *data);
+int readCircBuffer(circularBuffer *buffer, int *data);
 
 // Function to compute size of buffer to be read
 int sizeBuf(circularBuffer *buffer);

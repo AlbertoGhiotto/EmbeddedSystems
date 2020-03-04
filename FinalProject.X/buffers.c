@@ -51,7 +51,7 @@ void writeOnCircBuffer(circularBuffer *buffer, int data) {
         buffer->writeIndex = 0;
 }
 
-void readCircBuffer(circularBuffer *buffer, int *data) {
+int readCircBuffer(circularBuffer *buffer, int *data) {
     IEC1bits.U2RXIE = 0; // Disable interrupt of UART
     if (buffer->readIndex == buffer->writeIndex) { // We've finished reading
         IEC1bits.U2RXIE = 1; // Enable interrupt of UART

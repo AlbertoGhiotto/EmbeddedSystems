@@ -1,8 +1,8 @@
 #ifndef XC_HEADER_BUTTONS_H
 #define	XC_HEADER_BUTTONS_H
 
-#define S6NOTPRESSED false
-#define S6PRESSED    true
+#define S6NOTPRESSED 0
+#define S6PRESSED    1
 
 // S5 button ISR
 void __attribute__((__interrupt__, _auto_psv_)) _INT0Interrupt();
@@ -17,7 +17,7 @@ void tmr3_setup_period(int ms);
 void setButton();
 
 // Flag s6 pressed
-bool flagS6 = S6NOTPRESSED;
+int flagS6 = S6NOTPRESSED;
 
 #endif	/* XC_HEADER_BUTTONS_H */
 

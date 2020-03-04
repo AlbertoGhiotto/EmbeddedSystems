@@ -6,6 +6,8 @@
  * Created on 27 December 2019, 15:26
  */
 
+#include <string.h>
+#include <stdio.h>
 #include "xc.h"
 #include "global.h"
 #include "buffers.h"
@@ -31,10 +33,11 @@ void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {
 
 int sendToPC(char* msg){
     char sendMsg[sendDIM];
+    int i = 0;
     
     sprintf(sendMsg, "$%s*" ,msg);      // $ and * are required from msgs
     
-    for (int i = 0; i < sendDIM; i++){
+    for (i = 0; i < sendDIM; i++){
         if(U2STAbits.UTXBF == 0)    // If buffer is not full
             U2TXREG = sendMsg[i];
     }

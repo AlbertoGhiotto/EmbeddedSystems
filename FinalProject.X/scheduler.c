@@ -11,15 +11,14 @@
 #include "global.h"
 
 void init_heartbeat_n(){
-    // Set n = 0. The scheduler will update it on the go. ------------------ Already taken care of in definition
-    /*
+    // Set n = 0. The scheduler will update it on the go.   
     schedInfo[0].n = 0;
     schedInfo[1].n = 0;
     schedInfo[2].n = 0;
     schedInfo[3].n = 0;
     schedInfo[4].n = 0;
     schedInfo[5].n = 0;
-   */ 
+    
     // Heartbeat is = 100, hence: 
     // N[i] = period of task / heartbeat
     schedInfo[0].N = 1;     // UART                     10 Hz

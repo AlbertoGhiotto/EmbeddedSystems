@@ -12,8 +12,8 @@
 //#include headers
 
 void setPWM() { 
-    float f_pwm = 1000; // The frequency must be 1 kHz
-    float T_pwm = 1/f_pwm;
+    f_pwm = 1000; // The frequency must be 1 kHz
+    //float T_pwm = 1/f_pwm;
     
     /*In the Free Running mode, the PWM time base counts
     upwards until the value in the Time Base Period register

@@ -34,7 +34,7 @@ void __attribute__((__interrupt__, _auto_psv_)) _INT1Interrupt(){
     IFS1bits.INT1IF = 0;        // reset interrupt flag
     IEC1bits.INT1IE = 0;        // Disable interrupt of button s5
     
-    flagS6 = !flagS6;            // Toogle state of the flag
+    flagS6 = !(flagS6);            // Toogle state of the flag
     
     tmr3_setup_period(15);       // Start debouncing timer 
 }

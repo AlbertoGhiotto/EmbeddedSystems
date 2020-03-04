@@ -6,7 +6,7 @@
 #define MAX_TASKS 6 // Define the number of task to perform
 
 typedef struct {
-    int n = 0;  // Set n to 0, the scheduler will update it on the go
+    int n;  // Set n to 0, the scheduler will update it on the go
     int N;
 } heartbeat;
 
