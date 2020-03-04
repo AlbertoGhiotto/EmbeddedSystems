@@ -38,22 +38,22 @@ void scheduler() {
         if (schedInfo[i].n == schedInfo[i].N) {
             switch (i) {
                 case 0:
-                    //task1
+                    fromUart();
                     break;
                 case 1:
-                   //task2
+                    acquireTemp();
                     break;
                 case 2:
-                    //task3
+                    averageTemperature();
                     break;
                 case 3:
-                    //task4
+                    sendMCFBK();
                     break;
                 case 4:
-                    //task5
+                    blinkLed();
                     break;
                 case 5:
-                    //task6
+                    lcdOutput();
                     break;
             }
             schedInfo[i].n = 0;

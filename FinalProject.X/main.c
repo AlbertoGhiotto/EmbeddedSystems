@@ -73,6 +73,5 @@ int main(void) {
     while (1) {
        scheduler();
     }   
-    
     return 0;
 }

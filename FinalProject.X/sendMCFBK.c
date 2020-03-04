@@ -13,7 +13,7 @@
 #include "toUart.h"
 
 
-int sendMCFBK(void){
+int sendMCFBK(){
     
 /*   switch (board_state)
     {

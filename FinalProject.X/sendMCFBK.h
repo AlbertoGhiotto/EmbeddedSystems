@@ -8,7 +8,7 @@ char msg[20];
 // Support variable for state printing
 //char state[1];
 
-int sendMCFBK(void);
+int sendMCFBK();
 
 #endif	/* XC_HEADER_MCFBK_H */
 
