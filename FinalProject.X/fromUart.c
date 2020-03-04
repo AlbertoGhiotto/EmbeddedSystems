@@ -6,7 +6,6 @@
  * Created on 28 December 2019, 10:47
  */
 
-
 #include "xc.h"
 #include "global.h"
 #include "fromUart.h"
@@ -16,29 +15,34 @@
 #include "parser.h"
 #include "timer.h"
 #include "buttons.h"
+#include "buffers.h"
 
-int fromUart(void) 
-{
+int fromUart(void) {
     // Missing buffer
-    
-    while (U2STAbits.URXDA == 1) {  // Indicates that the receive buffer has data available
-            tempVar = U2RXREG;      // Read receive buffer
-            // U2TXREG = tempBuff;
-            tempConv = tempVar;     // Convert int into corresponding char ascii code
-            parseFlag = parse_byte(&pstate, tempConv);
-           
-            if(parseFlag == NEW_MESSAGE){
-                decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);
-            }
-            
+    while (sizeBuf(&transmissionBuffer) > 0) {
+        bufferFlag = readCircBuffer(&transmissionBuffer, &tempVar);
+        tempConv = tempVar; // Convert int into corresponding char ascii code
+        parseFlag = parse_byte(&pstate, tempConv);
+
+        if (parseFlag == NEW_MESSAGE) {
+            decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);
+            sendACK_enInt(decodeFlag);
         }
-        if (U2STAbits.URXDA == 1) {  // reset URXDA flag
-            tempVar = U2RXREG;
+    }
+    while (U2STAbits.URXDA == 1) {   // Indicates that the receive buffer has data available
+        tempVar = U2RXREG;           // Read receive buffer
+        // U2TXREG = tempBuff;
+        tempConv = tempVar;          // Convert int into corresponding char ascii code
+        parseFlag = parse_byte(&pstate, tempConv);
+
+        if (parseFlag == NEW_MESSAGE) {
+            decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);
+            sendACK_enInt(decodeFlag);
         }
-    
-    
+    }
     return 0;
 }
+
 int decodeMessage(char* msg_type, char* msg_payload)
 {   
     if(strcmp(msg_type, "HLREF") == 0)              // Message is of type HLREF
@@ -59,7 +63,7 @@ int decodeMessage(char* msg_type, char* msg_payload)
                 
                 return REF_P;       // Positive reference ack signal
             }
-            else    // If the message didn't get sent correctly
+            else                    // If the message didn't get sent correctly
             {
                 return REF_N;       // Negative reference ack signal
             }
@@ -90,7 +94,8 @@ int decodeMessage(char* msg_type, char* msg_payload)
     }   
     return ERR;
 }
-void sendMC_enableInterrupt(short int retProc) {
+
+void sendACK_enInt(int decodeFlag) {
     switch (decodeFlag) {
         case REF_N:
             sendToPC("MCACK,REF,0");
