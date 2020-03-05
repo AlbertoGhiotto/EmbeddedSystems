@@ -18,7 +18,7 @@ int averageTemperature(void) {
     avgTemp = 0;
     // Compute average of last 10 temperature readings contained in the buffers
     for (i = 0; i < TEMPBUFFDIM; i++) {
-        avgTemp = avgTemp + temp[i];
+        avgTemp = avgTemp + tempBuffer.temp[i];
     }
     avgTemp = avgTemp / TEMPBUFFDIM;
 

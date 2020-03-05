@@ -10,17 +10,13 @@
 #include "global.h"
 #include "buffers.h"
 
-void initBuffers(circularBuffer *buffer) {
-    
+void initBuffers(circularBuffer *buffer, temperatureBuffer *tempBuffer) {
     // Temp buffer
-    temp = {0.0};
-    tempIndex = 0;
+    tempBuffer->tempIndex = 0;
     
     //buffer->buffer = struct content ( actual buffer content );
     buffer->readIndex = 0;
     buffer->writeIndex = 0;
-    
-    
 }
 
 int sizeBuf(circularBuffer *buffer) {
@@ -47,8 +43,8 @@ int sizeBuf(circularBuffer *buffer) {
 }
 
 void writeOnTempBuff(float data) {
-    temp[tempIndex] = data;
-    tempIndex++;
+    tempBuffer.temp[tempBuffer.tempIndex] = data;
+    tempBuffer.tempIndex++;
 }
 
 void writeOnCircBuffer(circularBuffer *buffer, int data) {

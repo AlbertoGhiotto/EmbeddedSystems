@@ -57,9 +57,9 @@ void setLCD() {
     SPI1STATbits.SPIEN = 1; // enable SPI
     
     // Set title variables
-    mander[5] = "STA: ";
-    meleon[5] = "TEM: ";
-    izard[5]  = "RPM: "; 
+    strcpy(mander, "STA: ");
+    strcpy(meleon, "TEM: ");
+    strcpy(izard, "RPM: ");
 }
 
 // Clear function clears both rows

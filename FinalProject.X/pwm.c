@@ -9,6 +9,7 @@
 #include "xc.h"
 #include "global.h"
 #include "pwm.h"
+#include "buffers.h"
 //#include headers
 
 void setPWM() { 
