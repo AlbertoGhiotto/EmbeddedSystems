@@ -12,20 +12,23 @@
 #include "global.h"
 #include "toUart.h"
 
+int sendMCFBK() {
 
-int sendMCFBK(){
-    
-/*   switch (board_state)
-    {
-        case HALT:          state = "H";
-        case TIMEOUT:       state = "T";
-        case CONTROLLED:    state = "C";
-    }
-*/  
-// Convert 
-sprintf(msg, "MCFBK,%d,%d,%d", actualRPM1, actualRPM2, board_state);
+    // Message variable
+    char msg[20];
 
-// Send message to PC
-sendToPC(msg);
+    /*   switch (board_state)
+        {
+            case HALT:          state = "H";
+            case TIMEOUT:       state = "T";
+            case CONTROLLED:    state = "C";
+        }
+     */
+    // Convert 
+    sprintf(msg, "MCFBK,%d,%d,%d", actualRPM1, actualRPM2, board_state);
 
+    // Send message to PC
+    sendToPC(msg);
+
+    return 0;
 }

@@ -20,20 +20,13 @@
 #include "buffers.h"
 
 int fromUart(void) {
-    
-    tempVar = 0;      // Variable for reading uart msgs
-    
-    // Decoding support variables
-    parseFlag = 0;
-    decodeFlag = 0;
-    bufferFlag = 0;
 
-    // Support rpm values
-    tempRPM1 = 0;
-    tempRPM2 = 0;
-    // Support saturation values
-    tempMin = 0;
-    tempMax = 0;
+    int tempVar = 0; // Variable for reading uart msgs
+    char tempConv;
+    // Decoding support variables
+    int parseFlag;
+    int decodeFlag;
+    int bufferFlag;
 
     // Missing buffer
     while (sizeBuf(&transmissionBuffer) > 0) {
@@ -62,6 +55,13 @@ int fromUart(void) {
 
 int decodeMessage(char* msg_type, char* msg_payload)
 {   
+     // Support rpm values
+    int tempRPM1;
+    int tempRPM2;
+    // Support saturation values
+    int tempMin;
+    int tempMax;
+    
     if(strcmp(msg_type, "HLREF") == 0)              // Message is of type HLREF
     {         
         if(board_state != STATE_SAFE )

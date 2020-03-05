@@ -16,8 +16,5 @@ void tmr3_setup_period(int ms);
 // Function enabling flag of buttons
 void setButton();
 
-// Flag s6 pressed
-int flagS6;
-
 #endif	/* XC_HEADER_BUTTONS_H */
 

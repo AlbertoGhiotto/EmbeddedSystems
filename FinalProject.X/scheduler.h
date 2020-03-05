@@ -3,14 +3,10 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define MAX_TASKS 6 // Define the number of task to perform
-
 typedef struct {
     int n;  // Set n to 0, the scheduler will update it on the go
     int N;
 } heartbeat;
-
-heartbeat schedInfo[MAX_TASKS];
 
 void init_heartbeat_n();
 void scheduler();

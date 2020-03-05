@@ -15,15 +15,11 @@ typedef struct {
     int tempIndex;
 } temperatureBuffer;
 
-temperatureBuffer tempBuffer;
-
 typedef struct {
     int buffer[TXBUFFDIM];
     int readIndex;
     int writeIndex;
 } circularBuffer;
-
-circularBuffer transmissionBuffer;      // Transmission buffer
 
 // Function to init transmission buffer
 void initBuffers(circularBuffer *buffer, temperatureBuffer *tempBuffer);

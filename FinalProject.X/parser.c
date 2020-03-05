@@ -8,6 +8,7 @@
  */
 
 #include "parser.h"
+#include "global.h"
 
 void setParser(){
 	pstate.state = STATE_DOLLAR;

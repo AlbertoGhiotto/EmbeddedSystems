@@ -13,7 +13,7 @@
 //#include headers
 
 void setPWM() { 
-    f_pwm = 1000; // The frequency must be 1 kHz
+    int f_pwm = 1000; // The frequency must be 1 kHz
     //float T_pwm = 1/f_pwm;
     
     /*In the Free Running mode, the PWM time base counts

@@ -10,12 +10,6 @@ void setPWM();
 int satRPM(int rpm);
 int normalizeDC(int* rpm1, int* rpm2);
 int updateRange(int min, int max);
-//int sign(int x);
-
-double dutyCycle1;
-double dutyCycle2;
-
-int f_pwm;
 
 #endif	/* XC_HEADER_PWM_H */
 

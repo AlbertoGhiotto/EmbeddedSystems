@@ -15,7 +15,6 @@
 #include "pwm.h"
 
 void lcdOutput(){
-    
     if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
     {
         clearLCD();
@@ -55,11 +54,6 @@ void setLCD() {
     SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
     SPI1CONbits.SPRE = 6; // 6:1 secondary prescaler
     SPI1STATbits.SPIEN = 1; // enable SPI
-    
-    // Set title variables
-    strcpy(mander, "STA: ");
-    strcpy(meleon, "TEM: ");
-    strcpy(izard, "RPM: ");
 }
 
 // Clear function clears both rows
@@ -79,16 +73,15 @@ void clearLCD() {
         while (SPI1STATbits.SPITBF == 1); // wait until not full
         SPI1BUF = ' ';
     }
-    
     // Reposition cursor on first row
     while (SPI1STATbits.SPITBF == 1); // wait until not full
     SPI1BUF = 0x80;
 }
 
 void setTitles(){
-    printToLCD(mander, STA);
-    printToLCD(meleon, TEM);
-    printToLCD(izard,  RPM);
+    printToLCD("STA: ", STA);
+    printToLCD("TEM: ", TEM);
+    printToLCD("RPM: ", RPM);
 }
 
 void printToLCD(char string[], int position){

@@ -15,12 +15,12 @@ void setLCD();
 void clearLCD();
 
 // String to print on LCD before data
-char mander[6];
-char meleon[6];
-char izard[6]; 
+//char mander[6];
+//char meleon[6];
+//char izard[6]; 
 
 // Support variable for printing second row
-char print[10];
+extern char print[10];
 
 #endif	/* XC_HEADER_LCD_H */
 

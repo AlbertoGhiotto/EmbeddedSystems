@@ -33,5 +33,5 @@ void blinkLed() {
     }
     else                        // If board is NOT in timeout state
         LATBbits.LATB1 = 0;     // Switch off led D4 
-    return 0;
+    //return 0;
 }

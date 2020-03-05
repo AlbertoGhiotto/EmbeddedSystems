@@ -15,6 +15,14 @@
 
 int averageTemperature(void) {
     int i;
+    // Variable to store computed average temperature
+    double avgTemp;
+    //  Support variable to store MCTEM message
+    char pcMsg[15];
+    // Support variable to print on LCD
+    char printTemp[4];
+
+    
     avgTemp = 0;
     // Compute average of last 10 temperature readings contained in the buffers
     for (i = 0; i < TEMPBUFFDIM; i++) {
