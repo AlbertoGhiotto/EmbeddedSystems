@@ -90,7 +90,7 @@ int decodeMessage(char* msg_type, char* msg_payload)
     else if(strcmp(msg_type, "HLSAT") == 0)             // Message is of type HLSAT
     {
         // Construct the message with the rpm
-        sscanf(msg_payload, "%d,%d", &tempMin, &tempMin);
+        sscanf(msg_payload, "%d,%d", &tempMin, &tempMax);
         if(!updateRange(actualRPM1, actualRPM2))
         {
             return SAT_P;           // Positive saturation ack signal
