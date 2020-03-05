@@ -8,6 +8,7 @@
 #define TEM 0x88
 #define RPM 0xC0
 
+void lcdOutput();
 void printToLCD(char string[], int position);
 void setTitles();
 void setLCD();

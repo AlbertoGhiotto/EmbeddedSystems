@@ -6,6 +6,8 @@
  * Created on 28 December 2019, 10:47
  */
 
+#include <stdio.h>
+#include <string.h>
 #include "xc.h"
 #include "global.h"
 #include "fromUart.h"
