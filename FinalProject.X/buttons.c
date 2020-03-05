@@ -63,6 +63,9 @@ void tmr3_setup_period(int ms){
 void setButton(){
     IEC0bits.T3IE = 1; // Enable interrupt of debouncing timer t3
     
+    // Set s6 flag button as not pressed
+    flagS6 = S6NOTPRESSED;
+    
     IFS0bits.INT0IF = 0; //reset interrupt flag for S5 button
     IFS1bits.INT1IF = 0; //reset interrupt flag for S6 button
     IEC0bits.INT0IE = 1; //enable interrupt for S5 button

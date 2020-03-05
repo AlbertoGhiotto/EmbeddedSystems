@@ -55,6 +55,11 @@ void setLCD() {
     SPI1CONbits.PPRE = 3; // 1:1 primary prescaler
     SPI1CONbits.SPRE = 6; // 6:1 secondary prescaler
     SPI1STATbits.SPIEN = 1; // enable SPI
+    
+    // Set title variables
+    mander[5] = "STA: ";
+    meleon[5] = "TEM: ";
+    izard[5]  = "RPM: "; 
 }
 
 // Clear function clears both rows

@@ -54,7 +54,7 @@ int main(void) {
     // All setup and initializations
     setADC();
     setLedPins();
-    initTxBuffer(&transmissionBuffer);
+    initBuffers(&transmissionBuffer);
     setButton();
     setTitles();
     setLCD();

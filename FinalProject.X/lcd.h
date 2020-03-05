@@ -14,9 +14,9 @@ void setLCD();
 void clearLCD();
 
 // String to print on LCD before data
-char mander[5] = "STA: ";
-char meleon[5] = "TEM: ";
-char izard[5]  = "RPM: "; 
+char mander[5];
+char meleon[5];
+char izard[5]; 
 
 // Support variable for printing second row
 char print[10];

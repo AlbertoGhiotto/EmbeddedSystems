@@ -18,20 +18,20 @@
 #define ENA_P 6     // for a positive ack to a enabling command
 
 
-int tempVar = 0;      // Variable for reading uart msgs
+int tempVar;      // Variable for reading uart msgs
 char tempConv;
 
 // Decoding support variables
-int parseFlag = 0;
-int decodeFlag = 0;
-int bufferFlag = 0;
+int parseFlag;
+int decodeFlag;
+int bufferFlag;
 
 // Support rpm values
-int tempRPM1 = 0;
-int tempRPM2 = 0;
+int tempRPM1;
+int tempRPM2;
 // Support saturation values
-int tempMin = 0;
-int tempMax = 0;
+int tempMin;
+int tempMax;
 
 // Main function
 int fromUart(void);

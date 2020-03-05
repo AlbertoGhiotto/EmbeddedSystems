@@ -7,8 +7,8 @@
 #define TXBUFFDIM 100       // Transmission buffer
 
 // float temp[TEMPBUFFDIM]  = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-float temp[TEMPBUFFDIM]  = {0.0};       // Temperature buffer declared and initialized
-int tempIndex = 0;
+float temp[TEMPBUFFDIM];       // Temperature buffer declared and initialized
+int tempIndex;
 
 typedef struct {
     int buffer[TXBUFFDIM];
@@ -19,7 +19,7 @@ typedef struct {
 circularBuffer transmissionBuffer;      // Transmission buffer
 
 // Function to init transmission buffer
-void initTxBuffer(circularBuffer *buffer);
+void initBuffers(circularBuffer *buffer);
 
 // Function to write on temp buffer
 void writeOnTempBuff(float data);       

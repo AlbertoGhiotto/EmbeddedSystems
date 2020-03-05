@@ -7,8 +7,20 @@
  */
 
 #include "xc.h"
-#include "scheduler.h"
+#include "acquireTemperature.h"
+#include "averageTemperature.h"
+#include "blinkLeds.h"
+#include "buffers.h"
+#include "buttons.h"
+#include "fromUart.h"
 #include "global.h"
+#include "lcd.h"
+#include "parser.h"
+#include "pwm.h"
+#include "scheduler.h"
+#include "sendMCFBK.h"
+#include "timer.h"
+#include "toUart.h"
 
 void init_heartbeat_n(){
     // Set n = 0. The scheduler will update it on the go.   
@@ -28,7 +40,6 @@ void init_heartbeat_n(){
     schedInfo[4].N = 10;    // Blinking leds             1 Hz
     schedInfo[5].N = 1;     // LCD update               10 Hz
 }
-
 
 void scheduler() {
     int i;

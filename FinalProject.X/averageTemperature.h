@@ -5,7 +5,7 @@
 
 int averageTemperature(void);
 // Variable to store computed average temperature
-double avgTemp = 0;
+double avgTemp;
 
 //  Support variable to store MCTEM message
 char pcMsg[15];

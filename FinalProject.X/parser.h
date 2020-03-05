@@ -1,11 +1,11 @@
 #ifndef PARSER_H
 #define	PARSER_H
 
-#define STATE_DOLLAR  (1) // we discard everything until a dollar is found
-#define STATE_TYPE    (2) // we are reading the type of msg until a comma is found
-#define STATE_PAYLOAD (3) // we read the payload until an asterix is found
-#define NEW_MESSAGE (1) // new message received and parsed completely
-#define NO_MESSAGE (0) // no new messages
+#define STATE_DOLLAR    (1) // we discard everything until a dollar is found
+#define STATE_TYPE      (2) // we are reading the type of msg until a comma is found
+#define STATE_PAYLOAD   (3) // we read the payload until an asterix is found
+#define NEW_MESSAGE     (1) // new message received and parsed completely
+#define NO_MESSAGE      (0) // no new messages
 
 typedef struct { 
 	int state;
@@ -19,7 +19,6 @@ typedef struct {
 void setParser();
 
 int parse_byte(parser_state* ps, char byte);
-
 
 parser_state pstate;
 

@@ -18,6 +18,21 @@
 #include "buffers.h"
 
 int fromUart(void) {
+    
+    tempVar = 0;      // Variable for reading uart msgs
+    
+    // Decoding support variables
+    parseFlag = 0;
+    decodeFlag = 0;
+    bufferFlag = 0;
+
+    // Support rpm values
+    tempRPM1 = 0;
+    tempRPM2 = 0;
+    // Support saturation values
+    tempMin = 0;
+    tempMax = 0;
+
     // Missing buffer
     while (sizeBuf(&transmissionBuffer) > 0) {
         bufferFlag = readCircBuffer(&transmissionBuffer, &tempVar);
@@ -117,7 +132,7 @@ void sendACK_enInt(int decodeFlag) {
             sendToPC("MCACK,ENA,1");
             
             tmr2_restart_timer();       // Enable timer 2 interrupts for timeout mode
-            buttonSetup();              // Re-enable buttons interrupts for safe mode
+            setButton();              // Re-enable buttons interrupts for safe mode
             break;
         default:
             break;

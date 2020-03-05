@@ -10,10 +10,17 @@
 #include "global.h"
 #include "buffers.h"
 
-void initTxBuffer(circularBuffer *buffer) {
+void initBuffers(circularBuffer *buffer) {
+    
+    // Temp buffer
+    temp = {0.0};
+    tempIndex = 0;
+    
     //buffer->buffer = struct content ( actual buffer content );
     buffer->readIndex = 0;
     buffer->writeIndex = 0;
+    
+    
 }
 
 int sizeBuf(circularBuffer *buffer) {

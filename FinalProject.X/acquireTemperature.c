@@ -16,7 +16,7 @@
     
 void acquireTemp() {
     // Variables for printing on LCD
-    char temp[16];
+    // char temp[16];
     
     float degTemp;
     
