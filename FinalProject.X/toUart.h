@@ -12,6 +12,6 @@ void setUART();
 int sendToPC(char* msg);
 
 // ISR 
-void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt ();
+//void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt ();
 
 #endif	/* XC_HEADER_TOUART_H */

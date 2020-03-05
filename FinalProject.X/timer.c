@@ -54,8 +54,7 @@ void tmr2_setup_period(int ms)
 
 // Timer 2 temporization function 
 void tmr2_wait_period() {
-    while (IFS0bits.T2IF == 0)              // Wait for the timer to finish
-    {
+    while (IFS0bits.T2IF == 0){              // Wait for the timer to finish
     }
     IFS0bits.T2IF = 0;                      // Set the timer flag to zero to be notified of a new event    
 }

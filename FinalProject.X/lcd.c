@@ -15,6 +15,7 @@
 #include "pwm.h"
 
 void lcdOutput(){
+    char printString[10];
     if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
     {
         clearLCD();
@@ -32,19 +33,19 @@ void lcdOutput(){
                 break;
         }
         // Second row: rpm
-        sprintf(print, "%d,%d", actualRPM1, actualRPM2);
-        printToLCD(print, RPM + 0x04);
+        sprintf(printString, "%d,%d", actualRPM1, actualRPM2);
+        printToLCD(printString, RPM + 0x04);
     }
     else                // When S6 is clicked
     {
         clearLCD();
         // First row: saturation values
-        sprintf(print, "SAT MIN: %d MAX: %d", minRPM, maxRPM);
-        printToLCD(print, STA);
+        sprintf(printString, "SAT MIN: %d MAX: %d", minRPM, maxRPM);
+        printToLCD(printString, STA);
         
         // Second row: pwm duty cycle values
-        sprintf(print, "RPM: %f,%f", dutyCycle1, dutyCycle2);
-        printToLCD(print, RPM );
+        sprintf(printString, "RPM: %f,%f", dutyCycle1, dutyCycle2);
+        printToLCD(printString, RPM );
     }
 }
 

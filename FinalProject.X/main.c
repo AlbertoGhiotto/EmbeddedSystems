@@ -50,6 +50,25 @@
 #include "timer.h"
 #include "toUart.h"
 
+enum state board_state;
+
+// RPM setting variables
+int minRPM;
+int maxRPM;
+int actualRPM1;
+int actualRPM2;
+
+double dutyCycle1;
+double dutyCycle2;
+circularBuffer transmissionBuffer;
+temperatureBuffer tempBuffer;
+parser_state pstate;
+heartbeat schedInfo[MAX_TASKS];
+int flagS6;
+
+long int Fosc = 7372800; 
+long int Fcy = 1843200;
+
 int main(void) {
     // All setup and initializations
     setADC();
@@ -62,9 +81,6 @@ int main(void) {
     setPWM();
     init_heartbeat_n();
     setUART();
-    
-    Fosc = 7372800;
-    Fcy  = 1843200;
     
     int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
     tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 

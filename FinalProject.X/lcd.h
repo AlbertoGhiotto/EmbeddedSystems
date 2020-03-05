@@ -20,7 +20,7 @@ void clearLCD();
 //char izard[6]; 
 
 // Support variable for printing second row
-extern char print[10];
+//extern char print[10];
 
 #endif	/* XC_HEADER_LCD_H */
 
