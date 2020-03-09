@@ -67,7 +67,7 @@ heartbeat schedInfo[MAX_TASKS];
 int flagS6;
 
 long int Fosc = 7372800; 
-long int Fcy = 1843200;
+long int Fcy  = 1843200;
 
 int main(void) {
     // All setup and initializations
@@ -91,6 +91,7 @@ int main(void) {
     // loop
     while (1) {
        scheduler();
+       tmr1_wait_period();
     }   
     return 0;
 }

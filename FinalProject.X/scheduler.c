@@ -37,7 +37,7 @@ void init_heartbeat_n(){
     schedInfo[1].N = 1;     // Temp acquisition         10 Hz
     schedInfo[2].N = 10;    // Temp average and send     1 Hz
     schedInfo[3].N = 2;     // Feedback msg to pc        5 Hz 
-    schedInfo[4].N = 10;    // Blinking leds             1 Hz
+    schedInfo[4].N = 5;     // Blinking leds              1 Hz ( 500ms on, 500ms off)
     schedInfo[5].N = 1;     // LCD update               10 Hz
 }
 

@@ -13,13 +13,15 @@
 
 // Scheduler Timer - setup function
 void tmr1_setup_period(int ms) {
+    T1CONbits.TON = 0;
+     
     TMR1 = 0;               // Reset timer counter
-    Fcy = (Fosc / 4.0);
-    PR1 = (Fcy) / 64.0 * (ms / 1000.0); 
+    //Fcy = (Fosc / 4.0);
+    PR1 = (Fcy) / 8.0 * (ms / 1000.0); 
 
     IFS0bits.T1IF = 0;      // Resets interrupt flag (is necessary? Already don in wait period)
     
-    T1CONbits.TCKPS = 0b10; // Prescaler 1:64    -> up to a bit more than 2 seconds
+    T1CONbits.TCKPS = 0b01; // Prescaler 1:8    -> up to a bit more than 2 seconds
     T1CONbits.TON = 1;      // Starts the timer!
 }
 
