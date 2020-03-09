@@ -136,6 +136,7 @@ void sendACK_enInt(int decodeFlag) {
             setButton();              // Re-enable buttons interrupts for safe mode
             break;
         default:
+            sendToPC("ERR");
             break;
     }
     return;

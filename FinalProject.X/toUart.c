@@ -31,20 +31,21 @@ void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {
     writeOnCircBuffer(&transmissionBuffer, val);    // Save value in buffer
 }
 
-int sendToPC(char* msg){
+int sendToPC(char* msg) {
     char sendMsg[sendDIM];
     int i = 0;
-    
-    sprintf(sendMsg, "$%s*" ,msg);      // $ and * are required from msgs
-    
-    for (i = 0; i < sendDIM; i++){
-        if(U2STAbits.UTXBF == 0)    // If buffer is not full
+
+    sprintf(sendMsg, "$%s*", msg); // $ and * are required from msgs
+
+    for (i = 0; i < sendDIM; i++) {
+        if (U2STAbits.UTXBF == 0) { // If buffer is not full
             U2TXREG = sendMsg[i];
+        }
+
+        while (U2STAbits.UTXBF == 1) {
+        } // Wait for space in buffer
+
+        U2STAbits.OERR = 0; // Reset buffer overrun error
     }
-        
-    while(U2STAbits.UTXBF == 1){}     // Wait for space in buffer
-    
-    U2STAbits.OERR = 0;               // Reset buffer overrun error
-    
     return 0;
 }
