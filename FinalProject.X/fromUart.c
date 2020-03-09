@@ -28,7 +28,6 @@ int fromUart(void) {
     int decodeFlag;
     int bufferFlag;
 
-    // Missing buffer
     while (sizeBuf(&transmissionBuffer) > 0) {
         bufferFlag = readCircBuffer(&transmissionBuffer, &tempVar);
         tempConv = tempVar; // Convert int into corresponding char ascii code

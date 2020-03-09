@@ -18,8 +18,8 @@ void lcdOutput(){
     char printString[10];
     if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
     {
-        clearLCD();
-        setTitles();                    // TBD: optimize!!
+        //clearLCD();
+        //setTitles();                    // TBD: optimize!!
         // First part of first row: board state.  Second part of first row is printed in averageTemperature.c
         switch (board_state){
             case STATE_CONTROLLED:
@@ -81,7 +81,7 @@ void clearLCD() {
 
 void setTitles(){
     printToLCD("STA: ", STA);
-    printToLCD("TEM: ", TEM);
+    printToLCD("TEM:", TEM);
     printToLCD("RPM: ", RPM);
 }
 

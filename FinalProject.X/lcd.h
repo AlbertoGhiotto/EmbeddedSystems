@@ -5,7 +5,7 @@
 
 // Define cursor position
 #define STA 0x80
-#define TEM 0x88
+#define TEM 0x87
 #define RPM 0xC0
 
 void lcdOutput();

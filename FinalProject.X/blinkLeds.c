@@ -24,7 +24,7 @@ void blinkLed() {
     else 
         LATBbits.LATB0 = 1;
     
-    if(board_state == 1)        // If board is in timeout state
+    if(board_state == STATE_TIMEOUT)        // If board is in timeout state
     {   // Blink led D4
         if(LATBbits.LATB1 == 1) 
             LATBbits.LATB1 = 0;     
