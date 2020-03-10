@@ -84,6 +84,8 @@ int main(void) {
     
     setTitles();
     
+    flagS6 = 0;
+    
     tmr1_setup_period(1000);            // Wait 1 second at startup for ADC
     tmr1_wait_period();
 
@@ -101,5 +103,7 @@ int main(void) {
         //clearLCD();
         //printToLCD("Something went wrong!", STA);
     }
+    while(1);
+    
     return 0;
 }

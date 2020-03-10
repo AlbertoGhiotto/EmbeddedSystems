@@ -202,7 +202,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="Ex2.c" ex="false" overriding="false">
+      <item path="Ex2.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -216,9 +216,33 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="Ex3.c" ex="true" overriding="false">
+      <item path="Ex3.c" ex="false" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <item path="Ex3_1.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <pk4hybrid>
         <property key="ADC" value="true"/>

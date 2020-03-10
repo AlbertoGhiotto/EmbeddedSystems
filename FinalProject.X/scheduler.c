@@ -51,10 +51,10 @@ void scheduler() {
                     fromUart();
                     break;
                 case 1:
-                    acquireTemp();
+                    //acquireTemp();
                     break;
                 case 2:
-                    averageTemperature();
+                    //averageTemperature();
                     break;
                 case 3:
                     sendMCFBK();

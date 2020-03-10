@@ -83,6 +83,9 @@ int main(void) {
     tmr1_setup_period(1000); // Init timer to wait 1 second at startup
 
     setLCD();
+    
+     TRISBbits.TRISB0 = 0;   // D3
+     LATBbits.LATB0 = 1;
 
     // Variables for reading ADC value
     float ADCPotValue;
