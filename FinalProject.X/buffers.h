@@ -6,15 +6,14 @@
 #define TEMPBUFFDIM 10      // Temperature has to be averaged among 10 values
 #define TXBUFFDIM 100       // Transmission buffer
 
-// float temp[TEMPBUFFDIM]  = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-//double temp[TEMPBUFFDIM];       // Temperature buffer declared and initialized
-//int tempIndex;            // pd doesn't work!!!!
-
 typedef struct {
     float temp[TEMPBUFFDIM];
     int tempIndex;
 } temperatureBuffer;
 
+
+int kappa;
+    
 typedef struct {
     int buffer[TXBUFFDIM];
     int readIndex;

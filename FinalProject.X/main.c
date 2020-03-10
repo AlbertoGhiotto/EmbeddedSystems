@@ -64,7 +64,7 @@ circularBuffer transmissionBuffer;
 temperatureBuffer tempBuffer;
 parser_state pstate;
 heartbeat schedInfo[MAX_TASKS];
-int flagS6 = S6NOTPRESSED;
+int flagS6;
 
 long int Fosc = 7372800; 
 long int Fcy  = 1843200;
@@ -81,9 +81,11 @@ int main(void) {
     setPWM();
     init_heartbeat_n();
     setUART();
-    setTitles();
     
-    //int k;
+    flagS6 = 0 ; 
+    
+    tmr1_setup_period(1000); // Wait 1 second at startup
+    tmr1_wait_period();
     
     int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
     tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 
@@ -94,11 +96,14 @@ int main(void) {
     // Put some temporization function for waiting function startup (e.g for ADC)
     /*for(k = 0; k < 10; k++){
         tmr1_wait_period();
+
     }*/
     // loop
     while (1) {
        scheduler();
        tmr1_wait_period();
-    }   
+       //clearLCD();
+       //printToLCD("Something went wrong!", STA);
+       }
     return 0;
 }
