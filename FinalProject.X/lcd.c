@@ -80,9 +80,9 @@ void clearLCD() {
 }
 
 void setTitles(){
-    printToLCD("STA: ", STA);
+    printToLCD("STA:", STA);
     printToLCD("TEM:", TEM);
-    printToLCD("RPM: ", RPM);
+    printToLCD("RPM:", RPM);
 }
 
 void printToLCD(char string[], int position){

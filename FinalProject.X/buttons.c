@@ -26,6 +26,7 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT0Interrupt() {
     // Set safe state -> halt
     board_state = STATE_SAFE;
     
+    LATBbits.LATB1 = !LATBbits.LATB1;       // Just for debugging
     tmr3_setup_period(15);   // Start debouncing timer
 }
 
@@ -36,9 +37,9 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT1Interrupt(){
     
     //flagS6 = !(flagS6);            // Toggle state of the flag
     flagS6 = S6PRESSED;
-    LATBbits.LATB1 = !LATBbits.LATB1;
+    LATBbits.LATB1 = !LATBbits.LATB1;   // Just for debugging
     
-    tmr3_setup_period(150);       // Start debouncing timer 
+    tmr3_setup_period(15);       // Start debouncing timer 
 }
 
 // Debouncing timer ISR

@@ -66,44 +66,40 @@ parser_state pstate;
 heartbeat schedInfo[MAX_TASKS];
 int flagS6;
 
-long int Fosc = 7372800; 
-long int Fcy  = 1843200;
+long int Fosc = 7372800;
+long int Fcy = 1843200;
 
 int main(void) {
     // All setup and initializations
-    setADC();
-    setLedPins();
     initBuffers(&transmissionBuffer, &tempBuffer);
-    setButton();
-    setTitles();
-    setLCD();
     setParser();
-    setPWM();
     init_heartbeat_n();
+    
     setUART();
+    setADC();
+    setLCD();
+    setButton();
+    setLedPins();
+    setPWM();
     
-    flagS6 = 0 ; 
+    setTitles();
     
-    tmr1_setup_period(1000); // Wait 1 second at startup
+    tmr1_setup_period(1000);            // Wait 1 second at startup for ADC
     tmr1_wait_period();
-    
-    int hBeat = 100;             // Set heartbeat of scheduler to 100ms -> 10 Hz
-    tmr1_setup_period(hBeat);    // Init timer to work as the heartbeat: 5 ms 
-    
-    tmr2_setup_period(5000);     // Init timer for timeout mode
-    //tmr2_restart_timer();
-    
-    // Put some temporization function for waiting function startup (e.g for ADC)
-    /*for(k = 0; k < 10; k++){
-        tmr1_wait_period();
 
-    }*/
+    int hBeat = 100;                    // Set heartbeat of scheduler to 100ms -> 10 Hz
+    tmr1_setup_period(hBeat);           // Init timer to work as the heartbeat: 5 ms 
+
+    tmr2_setup_period(5000);            // Init timer for timeout mode
+    //tmr2_restart_timer();
+
+    //LATBbits.LATB1 = 1;
     // loop
     while (1) {
-       scheduler();
-       tmr1_wait_period();
-       //clearLCD();
-       //printToLCD("Something went wrong!", STA);
-       }
+        scheduler();
+        tmr1_wait_period();
+        //clearLCD();
+        //printToLCD("Something went wrong!", STA);
+    }
     return 0;
 }
