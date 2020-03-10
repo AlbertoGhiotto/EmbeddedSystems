@@ -10,10 +10,7 @@ typedef struct {
     float temp[TEMPBUFFDIM];
     int tempIndex;
 } temperatureBuffer;
-
-
-int kappa;
-    
+  
 typedef struct {
     int buffer[TXBUFFDIM];
     int readIndex;
