@@ -35,7 +35,7 @@ int sendToPC(char* msg) {
     char sendMsg[sendDIM];
     int i = 0;
 
-    sprintf(sendMsg, "$%s*", msg); // $ and * are required from msgs
+    sprintf(sendMsg, "$%-10s*", msg); // $ and * are required from msgs
 
     for (i = 0; i < sendDIM; i++) {
         if (U2STAbits.UTXBF == 0) { // If buffer is not full

@@ -24,13 +24,24 @@ void tmr1_setup_period(int ms) {
     T1CONbits.TCKPS = 0b01; // Prescaler 1:8    -> up to a bit more than 2 seconds
     T1CONbits.TON = 1;      // Starts the timer!
 }
-
+/*
 // Timer 1 temporization function 
 void tmr1_wait_period() {
     while (IFS0bits.T1IF == 0)  // Wait for the timer to finish
     {
     }
     IFS0bits.T1IF = 0;          // Set the timer flag to zero to be notified of a new event    
+}*/
+
+int tmr1_wait_period(){
+    if (IFS0bits.T1IF == 1) { //check if the timer has expired
+        return -1; //ERROR
+    }
+    while(IFS0bits.T1IF == 0){
+        // Wait for the flag
+    }
+    IFS0bits.T1IF = 0; //set the flag = 0
+    return 0;
 }
 
 void tmr2_restart_timer(){

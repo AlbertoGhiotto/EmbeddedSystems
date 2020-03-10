@@ -16,30 +16,17 @@ int sendMCFBK() {
 
     // Message variable
     char msg[20];
-    char state;
+    //char state;
 
-    /*   switch (board_state)
-        {
-            case HALT:          state = "H";
-            case TIMEOUT:       state = "T";
-            case CONTROLLED:    state = "C";
-        }
-     */
+    /* 
     switch (board_state) {
-        case STATE_CONTROLLED:
-            state = 'C';
-            break;
-        case STATE_TIMEOUT:
-            state = 'T';
-            break;
-        case STATE_SAFE:
-            state = 'H';
-            break;
-    }
-
+        case STATE_CONTROLLED:  state = 'C';  break;
+        case STATE_TIMEOUT:     state = 'T';  break;
+        case STATE_SAFE:        state = 'H';  break;
+    }*/
 
     // Convert 
-    sprintf(msg, "MCFBK,%d,%d,%c", actualRPM1, actualRPM2, state);
+    sprintf(msg, "MCFBK,%d,%d,%d. S6:%d", actualRPM1, actualRPM2, board_state, flagS6);
 
     // Send message to PC
     sendToPC(msg);

@@ -5,7 +5,7 @@
 
 // Timer 1
 void tmr1_setup_period(int ms);
-void tmr1_wait_period();
+int tmr1_wait_period();
 
 // Timer 2
 void tmr2_setup_period(int ms);

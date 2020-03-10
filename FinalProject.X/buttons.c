@@ -34,9 +34,11 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT1Interrupt(){
     IFS1bits.INT1IF = 0;        // reset interrupt flag
     IEC1bits.INT1IE = 0;        // Disable interrupt of button s5
     
-    flagS6 = !(flagS6);            // Toogle state of the flag
+    //flagS6 = !(flagS6);            // Toggle state of the flag
+    flagS6 = S6PRESSED;
+    LATBbits.LATB1 = !LATBbits.LATB1;
     
-    tmr3_setup_period(15);       // Start debouncing timer 
+    tmr3_setup_period(150);       // Start debouncing timer 
 }
 
 // Debouncing timer ISR
@@ -64,8 +66,7 @@ void setButton(){
     IEC0bits.T3IE = 1; // Enable interrupt of debouncing timer t3
     
     // Set s6 flag button as not pressed
-    flagS6 = S6NOTPRESSED;
-    
+        
     IFS0bits.INT0IF = 0; //reset interrupt flag for S5 button
     IFS1bits.INT1IF = 0; //reset interrupt flag for S6 button
     IEC0bits.INT0IE = 1; //enable interrupt for S5 button

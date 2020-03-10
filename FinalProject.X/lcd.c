@@ -36,7 +36,7 @@ void lcdOutput(){
         sprintf(printString, "%d,%d", actualRPM1, actualRPM2);
         printToLCD(printString, RPM + 0x04);
     }
-    else                // When S6 is clicked
+    else if (flagS6 == S6PRESSED)                 // When S6 is clicked
     {
         clearLCD();
         // First row: saturation values
