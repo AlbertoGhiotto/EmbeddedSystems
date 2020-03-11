@@ -51,7 +51,7 @@ void scheduler() {
                     fromUart();
                     break;
                 case 1:
-                    acquireTemp();
+                    //acquireTemp();
                     break;
                 case 2:
                     averageTemperature();
