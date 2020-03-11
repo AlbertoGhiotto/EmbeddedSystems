@@ -135,9 +135,9 @@ void sendACK_enInt(int decodeFlag) {
             tmr2_restart_timer();       // Enable timer 2 interrupts for timeout mode
             setButton();              // Re-enable buttons interrupts for safe mode
             break;
-        /*default:
-            sendToPC("ERR");
-            break;*/
+        default:
+            //sendToPC("ERR");
+            break;
     }
     return;
 }
