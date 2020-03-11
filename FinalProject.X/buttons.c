@@ -26,7 +26,7 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT0Interrupt() {
     // Set safe state -> halt
     board_state = STATE_SAFE;
     
-    LATBbits.LATB1 = 1;       // Just for debugging
+    //LATBbits.LATB1 = 1;       // Just for debugging
     tmr3_setup_period(15);   // Start debouncing timer
 }
 
