@@ -37,11 +37,12 @@ float getTemp(){
     while (IFS0bits.ADIF == 0);
     IFS0bits.ADIF = 0;
     ADCTempValue = ADCBUF0;  // Read buffer value immediately after checking the done bit 
-    
+    /*
     ADCTempValue = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
     degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10; // Convert the value in celsius degree
     
-    return degTemp;
+    return degTemp;*/
+    return ADCTempValue;
 }
 
 void setADC(){

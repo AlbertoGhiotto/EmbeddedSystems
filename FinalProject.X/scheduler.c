@@ -54,7 +54,7 @@ void scheduler() {
                     acquireTemp();
                     break;
                 case 2:
-                    //averageTemperature();
+                    averageTemperature();
                     break;
                 case 3:
                     sendMCFBK();
@@ -63,7 +63,7 @@ void scheduler() {
                     blinkLed();
                     break;
                 case 5:
-                    //lcdOutput();
+                    lcdOutput();
                     break;
             }
             schedInfo[i].n = 0;

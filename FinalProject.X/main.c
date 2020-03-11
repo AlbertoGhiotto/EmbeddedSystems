@@ -103,7 +103,6 @@ int main(void) {
         //clearLCD();
         //printToLCD("Something went wrong!", STA);
     }
-    while(1);
     
     return 0;
 }

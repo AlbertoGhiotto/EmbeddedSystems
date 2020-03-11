@@ -36,17 +36,17 @@ void lcdOutput(){
         sprintf(printString, "%d,%d", actualRPM1, actualRPM2);
         printToLCD(printString, RPM + 0x04);
     }
-    else if (flagS6 == S6PRESSED)                 // When S6 is clicked
+   /* else if (flagS6 == 1)                 // When S6 is clicked
     {
-        clearLCD();
+        //clearLCD();
         // First row: saturation values
         sprintf(printString, "SAT MIN: %d MAX: %d", minRPM, maxRPM);
         printToLCD(printString, STA);
         
         // Second row: pwm duty cycle values
         sprintf(printString, "RPM: %f,%f", dutyCycle1, dutyCycle2);
-        printToLCD(printString, RPM );
-    }
+        printToLCD(printString, RPM);
+    }*/
 }
 
 void setLCD() {
