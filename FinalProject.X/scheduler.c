@@ -51,7 +51,7 @@ void scheduler() {
                     fromUart();
                     break;
                 case 1:
-                    //acquireTemp();
+                    acquireTemp();     // With this task commented out it receives from uart and send ack
                     break;
                 case 2:
                     averageTemperature();

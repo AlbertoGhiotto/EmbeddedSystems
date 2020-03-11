@@ -15,7 +15,7 @@
 int sendMCFBK() {
 
     // Message variable
-    char msg[20];
+    char msg[50];
     char state;
 
     

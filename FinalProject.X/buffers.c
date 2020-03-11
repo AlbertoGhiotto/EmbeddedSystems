@@ -44,7 +44,7 @@ int sizeBuf(circularBuffer *buffer) {
 
 void writeOnTempBuff(float data) {
     tempBuffer.temp[tempBuffer.tempIndex] = data;
-    tempBuffer.tempIndex++;
+    tempBuffer.tempIndex = (tempBuffer.tempIndex +1) % 10;      // Same thing as for the circ buffer
 }
 
 void writeOnCircBuffer(circularBuffer *buffer, int data) {
