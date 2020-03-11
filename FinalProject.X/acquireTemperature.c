@@ -24,7 +24,7 @@ void acquireTemp() {
     
     // Save temp on buffer to be averaged every 1 hz
     writeOnTempBuff(degTemp);
-    return;
+    //return;
 }
 
 float getTemp(){

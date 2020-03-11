@@ -51,7 +51,7 @@ void scheduler() {
                     fromUart();
                     break;
                 case 1:
-                    //acquireTemp();
+                    acquireTemp();
                     break;
                 case 2:
                     //averageTemperature();
@@ -63,7 +63,7 @@ void scheduler() {
                     blinkLed();
                     break;
                 case 5:
-                    lcdOutput();
+                    //lcdOutput();
                     break;
             }
             schedInfo[i].n = 0;
