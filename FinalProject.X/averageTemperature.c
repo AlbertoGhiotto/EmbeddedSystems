@@ -20,7 +20,7 @@ int averageTemperature(void) {
     //  Support variable to store MCTEM message
     char pcMsg[15];
     // Support variable to print on LCD
-    char printTemp[4];
+    char printTemp[5];
 
     
     avgTemp = 0.0;
@@ -35,11 +35,12 @@ int averageTemperature(void) {
     sendToPC(pcMsg);
 
     // Print data on LCD
-    sprintf(printTemp, "%.2f", avgTemp);
-    printToLCD(printTemp, TEM + 0x04); // Print right after the "TEM" word
-
+    sprintf(printTemp, "%f", avgTemp);
+    //printToLCD("TEMP", TEM + 0x04); // Print right after the "TEM" word
+    printToLCD("TEM:", TEM);
     // Reset average
     avgTemp = 0;
+    
 
     return 0;
 }
