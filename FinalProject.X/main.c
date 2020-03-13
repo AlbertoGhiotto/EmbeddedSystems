@@ -55,8 +55,8 @@ enum state board_state;
 // RPM setting variables
 int minRPM = MIN_PROP_VEL;
 int maxRPM = MAX_PROP_VEL;
-int actualRPM1 = 1;
-int actualRPM2 = 1;
+int actualRPM1 = 0;
+int actualRPM2 = 0;
 
 double dutyCycle1 = 0.0;
 double dutyCycle2 = 0.0;
@@ -96,15 +96,11 @@ int main(void) {
     tmr1_setup_period(hBeat);           // Init timer to work as the heartbeat: 5 ms 
 
     tmr2_setup_period(5000);            // Init timer for timeout mode
-    //tmr2_restart_timer();
-
-    //LATBbits.LATB1 = 1;
+    
     // loop
     while (1) {
         scheduler();
         tmr1_wait_period();
-        //clearLCD();
-        //printToLCD("Something went wrong!", STA);
     }
     
     return 0;

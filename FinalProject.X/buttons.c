@@ -25,8 +25,12 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT0Interrupt() {
     
     // Set safe state -> halt
     board_state = STATE_SAFE;
+    // Stop timeout mode timer
+    TMR2 = 0;
+    T2CONbits.TON = 0;
+    IEC0bits.T2IE = 0; //disable interrupt for timeout mode
+    IFS0bits.T2IF = 0; //set the flag = 0
     
-    //LATBbits.LATB1 = 1;       // Just for debugging
     tmr3_setup_period(50);   // Start debouncing timer
 }
 

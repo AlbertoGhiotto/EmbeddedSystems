@@ -132,7 +132,7 @@ void sendACK_enInt(int decodeFlag) {
         case ENA_P:
             sendToPC("MCACK,ENA,1");
             
-            tmr2_restart_timer();       // Enable timer 2 interrupts for timeout mode
+            tmr2_restart_timer();       // Enable timer 2 interrupts for timeout mode and restart timer
             setButton();              // Re-enable buttons interrupts for safe mode
             break;
         default:
