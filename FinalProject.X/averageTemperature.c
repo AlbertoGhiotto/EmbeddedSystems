@@ -28,7 +28,7 @@ int averageTemperature(void) {
     avgTemp = avgTemp / TEMPBUFFDIM;
 
     // Send data to pc
-    sprintf(pcMsg,"MCTEM,%.2f------",avgTemp);
+    sprintf(pcMsg,"MCTEM,%.2f",avgTemp);
     sendToPC(pcMsg);
 
     // Print data on LCD

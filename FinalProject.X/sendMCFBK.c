@@ -26,7 +26,7 @@ int sendMCFBK() {
     }
 
     // Convert 
-    sprintf(msg, "MCFBK,%d,%d,%c. S6:%d", actualRPM1, actualRPM2, state, flagS6);
+    sprintf(msg, "MCFBK,%d,%d,%c", actualRPM1, actualRPM2, state);
 
     // Send message to PC
     sendToPC(msg);
