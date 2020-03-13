@@ -55,11 +55,11 @@ enum state board_state;
 // RPM setting variables
 int minRPM = MIN_PROP_VEL;
 int maxRPM = MAX_PROP_VEL;
-int actualRPM1 = 3;
-int actualRPM2 = 4;
+int actualRPM1 = 1;
+int actualRPM2 = 1;
 
-double dutyCycle1 = 5.0;
-double dutyCycle2 = 6.0;
+double dutyCycle1 = 0.0;
+double dutyCycle2 = 0.0;
 circularBuffer transmissionBuffer;
 temperatureBuffer tempBuffer;
 parser_state pstate;

@@ -18,6 +18,8 @@ void lcdOutput(){
     char printString[10];
     // Support variable to print on LCD
     char printTemp[5];
+    char printPDC1[4];
+    char printPDC2[4];
 
     if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
     {
@@ -50,7 +52,11 @@ void lcdOutput(){
         printToLCD(printString, STA);
         
         // Second row: pwm duty cycle values
-        sprintf(printString, "RPM:%d,%d", (int)dutyCycle1, (int)dutyCycle2);
+        sprintf(printPDC1, "%d", PDC1);
+        sprintf(printPDC2, "%d", PDC2);
+        //sprintf(printString, "RPM:%d,%d", PDC2, PDC3);
+        sprintf(printString, "RPM:%.0f,%.0f", dutyCycle1, dutyCycle2);
+        //sprintf(printString, "RPM:%c,%c", printPDC1, printPDC2);
         printToLCD(printString, RPM);
     }
 }
