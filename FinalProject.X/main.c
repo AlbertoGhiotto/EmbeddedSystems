@@ -69,6 +69,9 @@ int flagS6;
 long int Fosc = 7372800;
 long int Fcy = 1843200;
 
+// Variable to store computed average temperature
+double avgTemp;
+
 int main(void) {
     // All setup and initializations
     initBuffers(&transmissionBuffer, &tempBuffer);

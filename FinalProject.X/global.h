@@ -43,5 +43,8 @@ extern parser_state pstate;                     // Parser state
 
 extern heartbeat schedInfo[MAX_TASKS];          // Scheduling info for scheduler
 
+// Variable to store computed average temperature
+extern double avgTemp;
+
 #endif	/* XC_HEADER_GLOBAL_H */
 
