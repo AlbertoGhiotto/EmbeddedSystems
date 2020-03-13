@@ -25,17 +25,17 @@ int averageTemperature(void) {
     
     avgTemp = 0.0;
     // Compute average of last 10 temperature readings contained in the buffers
-    for (i = 0; i < TEMPBUFFDIM; i++) {
+    for (i = 0; i <= TEMPBUFFDIM; i++) {
         avgTemp = avgTemp + tempBuffer.temp[i];
     }
     avgTemp = avgTemp / TEMPBUFFDIM;
 
     // Send data to pc
-    sprintf(pcMsg,"MCTEM,%.2f",avgTemp);
+    sprintf(pcMsg,"MCTEM,%.2f------",avgTemp);
     sendToPC(pcMsg);
 
     // Print data on LCD
-    sprintf(printTemp, "%f", avgTemp);
+    sprintf(printTemp, "%.2f", avgTemp);
     printToLCD(printTemp, TEM + 0x04); // Print right after the "TEM" word
 
     // Reset average

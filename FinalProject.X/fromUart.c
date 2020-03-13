@@ -114,23 +114,23 @@ int decodeMessage(char* msg_type, char* msg_payload)
 void sendACK_enInt(int decodeFlag) {
     switch (decodeFlag) {
         case REF_N:
-            sendToPC("MCACK,REF,0");
+            sendToPC("MCACK,REF,0------");
             break;
         case REF_P:
-            sendToPC("MCACK,REF,1");
+            sendToPC("MCACK,REF,1------");
             tmr2_restart_timer();       // Restart timer since a new reference arrived
             break;
         case SAT_N:
-            sendToPC("MCACK,SAT,0");
+            sendToPC("MCACK,SAT,0------");
             break;
         case SAT_P:
-            sendToPC("MCACK,SAT,1");
+            sendToPC("MCACK,SAT,1------");
             break;
         case ENA_N:
-            sendToPC("MCACK,ENA,0");
+            sendToPC("MCACK,ENA,0------");
             break;
         case ENA_P:
-            sendToPC("MCACK,ENA,1");
+            sendToPC("MCACK,ENA,1------");
             
             tmr2_restart_timer();       // Enable timer 2 interrupts for timeout mode
             setButton();              // Re-enable buttons interrupts for safe mode
