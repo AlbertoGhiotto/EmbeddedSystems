@@ -55,11 +55,11 @@ int fromUart(void) {
 int decodeMessage(char* msg_type, char* msg_payload)
 {   
      // Support rpm values
-    int tempRPM1;
-    int tempRPM2;
+    int tempRPM1 = 0;
+    int tempRPM2 = 0;
     // Support saturation values
-    int tempMin;
-    int tempMax;
+    int tempMin = 0;
+    int tempMax = 0;
     
     if(strcmp(msg_type, "HLREF") == 0)              // Message is of type HLREF
     {         
@@ -90,7 +90,7 @@ int decodeMessage(char* msg_type, char* msg_payload)
     {
         // Construct the message with the rpm
         sscanf(msg_payload, "%d,%d", &tempMin, &tempMax);
-        if(!updateRange(actualRPM1, actualRPM2))
+        if(!updateRange(tempMin, tempMax))
         {
             return SAT_P;           // Positive saturation ack signal
         }
