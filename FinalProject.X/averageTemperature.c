@@ -23,7 +23,7 @@ int averageTemperature(void) {
     char printTemp[4];
 
     
-    avgTemp = 0;
+    avgTemp = 0.0;
     // Compute average of last 10 temperature readings contained in the buffers
     for (i = 0; i < TEMPBUFFDIM; i++) {
         avgTemp = avgTemp + tempBuffer.temp[i];
