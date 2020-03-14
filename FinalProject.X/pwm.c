@@ -31,7 +31,7 @@ void setPWM() {
     int PTMR_Prescaler = 1;  // support variable for PTPER computation
     PTPER = Fcy / (f_pwm * PTMR_Prescaler) - 1; //1842
     
-    PTCONbits.PTCKPS = 0;   // prescaler 1:1
+    PTCONbits.PTCKPS = 0;   // PWM time-based input clock prescaler select bits: 1:1 
     
     PTCONbits.PTEN = 1;     // Turns on the PWM time base module
     
