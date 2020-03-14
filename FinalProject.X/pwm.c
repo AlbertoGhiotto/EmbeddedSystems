@@ -72,7 +72,6 @@ int normalizeDC(int* rpm1, int* rpm2){
     PDC2 = dutyCycle1;
     PDC3 = dutyCycle2;
     
-    
     return 0;
 }
 

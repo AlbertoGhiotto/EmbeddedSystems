@@ -21,28 +21,27 @@
 
 int fromUart(void) {
 
-    int tempVar = 0; // Variable for reading uart msgs
-    char tempConv;
+    int tempVar = 0;    // Variable for reading uart msgs
+    char tempConv;      // Variable for converting int to ascii
     // Decoding support variables
     int parseFlag;
     int decodeFlag;
     int bufferFlag;
 
     while (sizeBuf(&transmissionBuffer) > 0) {
-        bufferFlag = readCircBuffer(&transmissionBuffer, &tempVar);
-        tempConv = tempVar; // Convert int into corresponding char ascii code
-        parseFlag = parse_byte(&pstate, tempConv);
+        bufferFlag = readCircBuffer(&transmissionBuffer, &tempVar);      // Read msg from PC
+        tempConv = tempVar;                                              // Convert int into corresponding char ascii code
+        parseFlag = parse_byte(&pstate, tempConv);                       // Parse each byte 
 
         if (parseFlag == NEW_MESSAGE) {
-            decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);
-            sendACK_enInt(decodeFlag);
+            decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);    // Get type of message
+            sendACK_enInt(decodeFlag);                                          // Send relative ack
         }
     }
-    while (U2STAbits.URXDA == 1) {   // Indicates that the receive buffer has data available
-        tempVar = U2RXREG;           // Read receive buffer
-        // U2TXREG = tempBuff;
-        tempConv = tempVar;          // Convert int into corresponding char ascii code
-        parseFlag = parse_byte(&pstate, tempConv);
+    while (U2STAbits.URXDA == 1) {                                        // Indicates that the receive buffer has data available
+        tempVar = U2RXREG;                                                // Read receive buffer
+        tempConv = tempVar;                                               // Convert int into corresponding char ascii code
+        parseFlag = parse_byte(&pstate, tempConv);                      
 
         if (parseFlag == NEW_MESSAGE) {
             decodeFlag = decodeMessage(pstate.msg_type, pstate.msg_payload);
@@ -72,9 +71,10 @@ int decodeMessage(char* msg_type, char* msg_payload)
             }
             // Construct the message with the rpm
             sscanf(msg_payload, "%d,%d", &tempRPM1, &tempRPM2);
-            if(!normalizeDC(&tempRPM1, &tempRPM2))
+            if(!normalizeDC(&tempRPM1, &tempRPM2))      // Set the new PWM values
             {
-                actualRPM1 = tempRPM1;
+                // Set the new RPM values to be printed
+                actualRPM1 = tempRPM1;          
                 actualRPM2 = tempRPM2;
                 
                 return REF_P;       // Positive reference ack signal
@@ -90,13 +90,14 @@ int decodeMessage(char* msg_type, char* msg_payload)
     {
         // Construct the message with the rpm
         sscanf(msg_payload, "%d,%d", &tempMin, &tempMax);
-        if(!updateRange(tempMin, tempMax))
+        if(!updateRange(tempMin, tempMax))          // Update the saturation values
         {
-            return SAT_P;           // Positive saturation ack signal
+            normalizeDC(&actualRPM1, &actualRPM2);  // The PWM is refreshed to comply with the new saturation values
+            return SAT_P;                           // Positive saturation ack signal
         }
-        return SAT_N;               // Negative saturation ack signal
+        return SAT_N;                               // Negative saturation ack signal
     }
-    else if (strcmp(msg_type, "HLENA") == 0) // Message is of type HLENA
+    else if (strcmp(msg_type, "HLENA") == 0)        // Message is of type HLENA
     {
         if (board_state == STATE_SAFE) 
         {
