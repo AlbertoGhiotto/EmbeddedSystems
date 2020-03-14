@@ -15,13 +15,10 @@
 #define VMAX 5.0
     
 void acquireTemp() {
-    // Variables for printing on LCD
-    // char temp[16];
-    
+    // Variable to store temp and print it on temp buffer
     float degTemp;
-    
+    // Get temperature
     degTemp = getTemp();
-    
     // Save temp on buffer to be averaged every 1 hz
     writeOnTempBuff(degTemp);
     return;
@@ -33,23 +30,20 @@ float getTemp(){
     // Variable for doing normalization and conversion
     float degTemp;
    
-    //ADCON1bits.SAMP = 1; //enable bit sampling 
-    while (IFS0bits.ADIF == 0);
-    IFS0bits.ADIF = 0;
-    ADCTempValue = ADCBUF0;  // Read buffer value immediately after checking the done bit 
+    //ADCON1bits.SAMP = 1; //enable bit sampling (only when using manual start) 
+    while (IFS0bits.ADIF == 0);    // Wait for the conversion to finish (done bit)
+    IFS0bits.ADIF = 0;             // Reset the done bit 
+    ADCTempValue = ADCBUF0;        // Read buffer value immediately after checking the done bit 
     
-    ADCTempValue = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN)); // Get ADC value already normalized
-    degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10; // Convert the value in celsius degree
+    ADCTempValue = (VMIN + ADCTempValue / 1023.0 * (VMAX - VMIN));  // Get ADC value already normalized
+    degTemp = 25 + ((ADCTempValue * 1000) - 750) / 10;              // Convert the value in celsius degree
     
     return degTemp;
-    //return ADCTempValue;
 }
 
 void setADC(){
-    
     ADCON3bits.ADCS = 63;   // Selects how long is one Tad [1/2 Tcy - 32 Tcy]
     //ADCON1bits.ASAM = 0;    // Set manual start
-    
     ADCON1bits.ASAM = 1;    // Set auto start
     
     ADCON1bits.SSRC = 7;    // Selects how the conversion should start (0 = manual, 7 = internal counter)
