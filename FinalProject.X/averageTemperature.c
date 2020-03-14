@@ -15,10 +15,8 @@
 
 int averageTemperature(void) {
     int i;
-    
-    //  Support variable to store MCTEM message
+    // Support variable to store MCTEM message
     char pcMsg[15];
-    
     // Reset average
     avgTemp = 0.0;
     // Compute average of last 10 temperature readings contained in the buffers
@@ -30,11 +28,6 @@ int averageTemperature(void) {
     // Send data to pc
     sprintf(pcMsg,"MCTEM,%.2f",avgTemp);
     sendToPC(pcMsg);
-
-    // Print data on LCD
-    //sprintf(printTemp, "%f", avgTemp);
-    //printToLCD("TEMP", TEM + 0x04); // Print right after the "TEM" word
-    //printToLCD("TEM:", TEM);
-
-  return 0;
+    
+    return 0;
 }
