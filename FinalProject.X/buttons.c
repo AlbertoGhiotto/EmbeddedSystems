@@ -39,9 +39,8 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT1Interrupt(){
     IFS1bits.INT1IF = 0;        // reset interrupt flag
     IEC1bits.INT1IE = 0;        // Disable interrupt of button s5
     
-    //flagS6 = !(flagS6);            // Toggle state of the flag
+    // Toggle state of the flag
     flagS6 = (flagS6 + 1 ) % 2;
-    //LATBbits.LATB1 = !LATBbits.LATB1;   // Just for debugging
     
     tmr3_setup_period(50);       // Start debouncing timer - previously was 15 but sometimes it still bounced
 }
