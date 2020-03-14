@@ -14,7 +14,8 @@
 #include "toUart.h"
 
 void setUART() {
-    U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1
+    // Baud Rate generator prescaler
+    U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1  |   ( Fosc / 4) / (16 * Baud Rate)
    
     U2MODEbits.UARTEN = 1;      // Enable UART
     U2STAbits.UTXEN = 1;        // Enable U2TX (must be after UARTEN)
