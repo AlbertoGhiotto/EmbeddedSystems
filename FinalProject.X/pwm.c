@@ -14,7 +14,6 @@
 
 void setPWM() { 
     int f_pwm = 1000; // The frequency must be 1 kHz
-    //float T_pwm = 1/f_pwm;
     
     /*In the Free Running mode, the PWM time base counts
     upwards until the value in the Time Base Period register
@@ -56,10 +55,7 @@ int updateRange(int min, int max){
 // Function to compute the duty cycle range
 int normalizeDC(int* rpm1, int* rpm2){
     long int newPTPER = PTPER;  
-    // PTPER = Fcy / (Fpwm * PTMR_Prescaler)
-    // F_pwm = 1/20000 = 50Hz
-    // PTMR_Prescaler = 1
-
+    
     *rpm1 = satRPM(*rpm1);  // Pass a int* when the declaration has a simple int?
     *rpm2 = satRPM(*rpm2);
     
@@ -67,8 +63,6 @@ int normalizeDC(int* rpm1, int* rpm2){
     dutyCycle1 = ((*rpm1 - MIN_DC) * 2.0 * newPTPER ) / (MAX_DC - MIN_DC);
     dutyCycle2 = ((*rpm2 - MIN_DC) * 2.0 * newPTPER ) / (MAX_DC - MIN_DC);
     // Assign it to the corresponding output pins
-    //PDC2 = (int)dutyCycle1;
-    //PDC3 = (int)dutyCycle2;
     PDC2 = dutyCycle1;
     PDC3 = dutyCycle2;
     
