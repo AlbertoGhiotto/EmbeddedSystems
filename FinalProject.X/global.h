@@ -20,23 +20,26 @@
 extern long int Fosc;// = 7372800; // 7.3728 MHz
 extern long int Fcy; // = 1843200; // Fosc / 4; // number of clocks in one second = 1,843,200 clocks for each second
 
-// Board state variable: Controlled, Timeout, Halt(safe mode))
+// Custom enum variable to store board state
+// Board states: Controlled, Timeout, Halt(safe mode))
 enum state{C, T, H};
 extern enum state board_state;
 
 // RPM setting variables
 extern int minRPM;
 extern int maxRPM;
+// Variables to store RPMs
 extern int actualRPM1;
 extern int actualRPM2;
 
+// Variable to store PWM duty cycle
 extern double dutyCycle1;
 extern double dutyCycle2;
 
 extern temperatureBuffer tempBuffer;           // Temperature buffer
 extern circularBuffer transmissionBuffer;      // Transmission buffer
 
-// Flag s6 pressed
+// Flag for button S6
 extern int flagS6;
 
 extern parser_state pstate;                     // Parser state

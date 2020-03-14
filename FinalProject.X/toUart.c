@@ -21,8 +21,8 @@ void setUART() {
     // U2STAbits.URXEN = 1; // enable U2RX (must be after UARTEN)
     
     IEC1bits.U2RXIE = 1;        // Enable rx interrupt for UART
-    // ----------COMMENT Interrupt arrives when UART2 receiver is 3/4 full 
-    U2STAbits.URXISEL = 0b10;   //  0b01 for data word transmission
+    
+    U2STAbits.URXISEL = 0b10;   //  0b01 for data word transmission -> 0b10 for longer words
 }
 
 void __attribute__((__interrupt__, __auto_psv__)) _U2RXInterrupt () {

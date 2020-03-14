@@ -50,23 +50,34 @@
 #include "timer.h"
 #include "toUart.h"
 
+// Custom enum variable to store board state
 enum state board_state;
 
 // RPM setting variables
-int minRPM = MIN_PROP_VEL;
-int maxRPM = MAX_PROP_VEL;
-int actualRPM1 = 0;
+int minRPM = MIN_PROP_VEL;      // Min allowed velocity
+int maxRPM = MAX_PROP_VEL;      // Max allowed velocity
+// Variables to store RPMs
+int actualRPM1 = 0;             
 int actualRPM2 = 0;
 
+// Variable to store PWM duty cycle
 double dutyCycle1 = 0.0;
 double dutyCycle2 = 0.0;
+
+// Circular buffer for UART transmission
 circularBuffer transmissionBuffer;
+// Buffer for temperature average
 temperatureBuffer tempBuffer;
+// Parser state variable
 parser_state pstate;
+// Scheduling info for scheduler
 heartbeat schedInfo[MAX_TASKS];
+// Flag for button S6
 int flagS6;
 
+// Frequency of board oscillator
 long int Fosc = 7372800;
+// Number of clocks per seconds
 long int Fcy = 1843200;
 
 // Variable to store computed average temperature
@@ -74,10 +85,13 @@ double avgTemp;
 
 int main(void) {
     // All setup and initializations
+    
+    // Data structures
     initBuffers(&transmissionBuffer, &tempBuffer);
     setParser();
     init_heartbeat_n();
     
+    // Peripherals
     setUART();
     setADC();
     setLCD();
@@ -85,9 +99,11 @@ int main(void) {
     setLedPins();
     setPWM();
     
+    // Print titles on LCD
     setTitles();
     
-    flagS6 = 0;
+    // Set S6's flag as not pressed (0)
+    flagS6 = S6NOTPRESSED;
     
     tmr1_setup_period(1000);            // Wait 1 second at startup for ADC
     tmr1_wait_period();
