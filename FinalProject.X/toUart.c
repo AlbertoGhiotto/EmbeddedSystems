@@ -15,10 +15,9 @@
 
 void setUART() {
     U2BRG = 11; // (7372800 / 4) / (16 * 9600) - 1
-     //U2BRG = 115200;
+   
     U2MODEbits.UARTEN = 1;      // Enable UART
     U2STAbits.UTXEN = 1;        // Enable U2TX (must be after UARTEN)
-    // U2STAbits.URXEN = 1; // enable U2RX (must be after UARTEN)
     
     IEC1bits.U2RXIE = 1;        // Enable rx interrupt for UART
     

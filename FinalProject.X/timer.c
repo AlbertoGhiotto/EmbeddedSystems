@@ -13,13 +13,12 @@
 
 // Scheduler Timer - setup function
 void tmr1_setup_period(int ms) {
-    T1CONbits.TON = 0;
+    T1CONbits.TON = 0;      // Stops the timer
      
     TMR1 = 0;               // Reset timer counter
-    //Fcy = (Fosc / 4.0);
     PR1 = (Fcy) / 8.0 * (ms / 1000.0); 
 
-    IFS0bits.T1IF = 0;      // Resets interrupt flag (is necessary? Already don in wait period)
+    IFS0bits.T1IF = 0;      // Resets interrupt flag
     
     T1CONbits.TCKPS = 0b01; // Prescaler 1:8    -> up to a bit more than 2 seconds
     T1CONbits.TON = 1;      // Starts the timer!
@@ -33,35 +32,17 @@ void tmr1_wait_period() {
     IFS0bits.T1IF = 0;          // Set the timer flag to zero to be notified of a new event    
 }
 
-/*int tmr1_wait_period(){
-    if (IFS0bits.T1IF == 1) { //check if the timer has expired
-        return -1; //ERROR
-    }
-    while(IFS0bits.T1IF == 0){
-        // Wait for the flag
-    }
-    IFS0bits.T1IF = 0; //set the flag = 0
-    return 0;
-}*/
-
-void tmr2_restart_timer(){
-    T2CONbits.TON = 0;      // Stops the timer
-    IEC0bits.T2IE = 1;      // Enable timer 2 interrupt
-    TMR2 = 0;
-    IFS0bits.T2IF = 0;      // Set the timer flag to zero to be notified of a new event
-    T2CONbits.TON = 1;      // Starts the timer
-}
-
 // Timeout mode timer - setup function
 void tmr2_setup_period(int ms)
 {
+    T2CONbits.TON = 0;                      // Stops the timer
+    
     TMR2 = 0;                               // Reset timer counter
-    //Fcy = (Fosc / 4.0); // already global
     PR2 = (Fcy) / 256.0 * (ms / 1000.0); 
-    // TODO: set prescaler to allow 5 seconds -> set it to 256. 7200 clock step for each second -> up to
+    
+    // Set prescaler to 256. 7200 clock step for each second -> up to more than 5 seconds
     T2CONbits.TCKPS = 0b11;                 // Prescaler 1:256    
     T2CONbits.TON = 1;                      // Starts the timer!
-    //IEC0bits.INT0IE = 1;                  // Re - enable interrupt of button s5
     IEC0bits.T2IE = 1;                      // Enable interrupt of timer t2
 }
 
@@ -70,6 +51,14 @@ void tmr2_wait_period() {
     while (IFS0bits.T2IF == 0){              // Wait for the timer to finish
     }
     IFS0bits.T2IF = 0;                      // Set the timer flag to zero to be notified of a new event    
+}
+
+void tmr2_restart_timer(){
+    T2CONbits.TON = 0;      // Stops the timer
+    IEC0bits.T2IE = 1;      // Enable timer 2 interrupt
+    TMR2 = 0;
+    IFS0bits.T2IF = 0;      // Set the timer flag to zero to be notified of a new event
+    T2CONbits.TON = 1;      // Starts the timer
 }
 
 // Timer 2 ISR - Set motor velocity to zeros and blink led D4
