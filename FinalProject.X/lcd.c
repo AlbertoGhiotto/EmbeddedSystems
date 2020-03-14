@@ -22,8 +22,8 @@ void lcdOutput(){
     if (flagS6 == S6NOTPRESSED)        // When S6 is not clicked
     {
         clearLCD();
-        setTitles();                    // TBD: optimize!!
-        // First part of first row: board state.  Second part of first row is printed in averageTemperature.c not anymore
+        setTitles();                    
+        // First part of first row: board state.
         switch (board_state){
             case STATE_CONTROLLED:
                 printToLCD("C", STA + 0x04);
@@ -35,10 +35,10 @@ void lcdOutput(){
                 printToLCD("H", STA + 0x04);
                 break;
         }
-        // Temperature
+        // Second part of first row: temperature
         sprintf(printTemp, "%.2f", avgTemp);
         printToLCD(printTemp, TEM + 0x04);
-        // Second row: rpm
+        // Second row: RPM
         sprintf(printString, "%d,%d", actualRPM1, actualRPM2);
         printToLCD(printString, RPM + 0x04);
     }
