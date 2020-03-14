@@ -40,7 +40,7 @@ void __attribute__((__interrupt__, __auto_psv__)) _INT1Interrupt(){
     IEC1bits.INT1IE = 0;        // Disable interrupt of button s5
     
     // Toggle state of the flag
-    flagS6 = (flagS6 + 1 ) % 2;
+    flagS6 = (flagS6 + 1 ) % 2;     // If flag = 0 -> flag = 1. If flag = 1 -> flag = 0
     
     tmr3_setup_period(50);       // Start debouncing timer - previously was 15 but sometimes it still bounced
 }
