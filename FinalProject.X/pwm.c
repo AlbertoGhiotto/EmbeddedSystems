@@ -43,7 +43,7 @@ int updateRange(int min, int max){
 
     // Check if the provided values are between the safe range, are consistent 
     // values of min and max and that zero values are allowed
-    if (max < min || min <= MIN_PROP_VEL || max >= MAX_PROP_VEL || min >= 0 || max <= 0){
+    if (max < min || min < MIN_PROP_VEL || max > MAX_PROP_VEL || min >= 0 || max <= 0){
         return 1; // Negative ack
     }
     // Update new values
