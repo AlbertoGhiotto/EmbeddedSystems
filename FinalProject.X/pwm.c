@@ -56,7 +56,8 @@ int updateRange(int min, int max){
 int normalizeDC(int* rpm1, int* rpm2){
     long int newPTPER = PTPER;  
     
-    *rpm1 = satRPM(*rpm1);  // Pass a int* when the declaration has a simple int?
+    // Saturate RPM if they're above the allowed threshold
+    *rpm1 = satRPM(*rpm1); 
     *rpm2 = satRPM(*rpm2);
     
     // Define the duty cycle

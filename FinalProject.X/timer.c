@@ -69,7 +69,9 @@ void __attribute__((__interrupt__, __auto_psv__)) _T2Interrupt () {
     // Set motor velocity to zero
     int rpm1 = 0;
     int rpm2 = 0;
+    // Set duty cycle to zero
     normalizeDC(&rpm1, &rpm2);
+    // Set RPM to be printed to zero
     actualRPM1 = 0;
     actualRPM2 = 0;
     
