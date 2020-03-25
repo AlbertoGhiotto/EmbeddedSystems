@@ -5,7 +5,7 @@ The dsPICDEM™ 2 Development Board is a development and evaluation tool that
 helps create embedded applications using dsPIC30F Digital Signal Controllers.
 [Producer site](https://www.microchip.com/Developmenttools/ProductDetails/DM300018)
 
-## Assigments
+## Assignments
 
 The assignments covered the application of the theoretical principles addressed during the lessons. 
 The concept learned by doing the assignments were fundamental in developing of the final project.
