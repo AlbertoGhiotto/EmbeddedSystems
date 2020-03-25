@@ -8,7 +8,7 @@ helps create embedded applications using dsPIC30F Digital Signal Controllers.
 ## Assignments
 
 The assignments covered the application of the theoretical principles addressed during the lessons. 
-The concept learned by doing the assignments were fundamental in developing of the final project.
+The concept learned by doing the assignments were fundamental in developing the final project.
 
 ## Final Project
 
